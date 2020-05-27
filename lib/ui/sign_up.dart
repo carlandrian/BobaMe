@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
-  static const String id = "Signup";
+  static const String id = "Signup_screen";
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }

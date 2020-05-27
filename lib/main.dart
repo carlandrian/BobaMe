@@ -1,4 +1,5 @@
 import 'package:boba_me/ui/login.dart';
+import 'package:boba_me/ui/product.dart';
 import 'package:boba_me/ui/sign_up.dart';
 import 'package:boba_me/ui/splash.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SignupScreen.id : (context) => SignupScreen(),
         LoginScreen.id : (context) => LoginScreen(),
+        ProductScreen.id : (context) => ProductScreen(),
       },
     );
   }

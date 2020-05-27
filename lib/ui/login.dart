@@ -1,3 +1,4 @@
+import 'package:boba_me/ui/product.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  static const String id = "login";
+  static const String id = "login_screen";
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -87,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       final loginUser = await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text);
                       if(loginUser != null) {
                         print("${loginUser.user.uid} is logged-in");
-
+                        Navigator.pushNamed(context, ProductScreen.id);
                       }
                     }catch(e) {
                       print("error is ${e}");
