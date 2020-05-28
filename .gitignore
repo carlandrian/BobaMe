@@ -45,3 +45,4 @@ app.*.map.json
 /android/app/google-services.json
 android/app/google-services.json
 boba_me/lib/ui/product.dart
+android/app/google-services.json
