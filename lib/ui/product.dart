@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/rendering.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 
@@ -21,7 +23,6 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     isCurrentUserLoggedIn();
-//    getAssetsFromRemoteStorage();
   }
 
 
@@ -46,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
               itemBuilder: (context, int index) {
                   return Container(
                     child: FutureBuilder(
-                      future: _getFirebaseImage(snapshots.data.documents[index]['imageId']),
+                      future: _getProducts(context, snapshots.data.documents[index]),//_getFirebaseImage(snapshots.data.documents[index]['imageId']),
                       builder: (context, imageSnapshots) {
                         if(imageSnapshots.connectionState == ConnectionState.done) {
                           return Container(
@@ -66,52 +67,10 @@ class _ProductScreenState extends State<ProductScreen> {
                       },
                     ),
                   );
-//                FirebaseStorage.instance.ref().child(snapshots.data.documents[index]['imageId']).getDownloadURL().
-//                  then((value) => setState((){
-//                      print("url : ${value}");
-////                    return Image.network(value,
-////                      width: MediaQuery.of(context).size.width,
-////                    );
-//                  }));
-
-                return Text("${snapshots.data.documents[index]['imageId']}");
               }
           );
         },
       ),
-//      ListView(
-//        children: <Widget>[
-//          Container(
-////            child: chaiUrl == null ? Image.asset("images/drink.png") :
-////            Image.network(
-////              chaiUrl,
-////              width: MediaQuery.of(context).size.width,
-////            ),
-//              child: getProductImageUsingImageId("chai.png"),
-//          ),
-//          Container(
-//            child: chaiUrl == null ? Image.asset("images/drink.png") :
-//            Image.network(
-//              chaiUrl,
-//              width: MediaQuery.of(context).size.width,
-//            ),
-//          ),
-//          Container(
-//            child: chaiUrl == null ? Image.asset("images/drink.png") :
-//            Image.network(
-//              chaiUrl,
-//              width: MediaQuery.of(context).size.width,
-//            ),
-//          ),
-//          Container(
-//            child: chaiUrl == null ? Image.asset("images/drink.png") :
-//            Image.network(
-//              chaiUrl,
-//              width: MediaQuery.of(context).size.width,
-//            ),
-//          ),
-//        ],
-//      ),
       bottomNavigationBar: Container(
         color: Colors.black,
         child: Padding(
@@ -160,27 +119,6 @@ class _ProductScreenState extends State<ProductScreen> {
     _auth.signOut();
     print("user has signed-out");
   }
-
-
-//  void getAssetsFromRemoteStorage()  {
-//    FirebaseStorage.instance.ref().child("coffee.png").getDownloadURL().then(
-//            (value) => setState((){
-//              chaiUrl = value;
-//            })
-//    );
-//
-//  }
-//
-//  Widget getProductImageUsingImageId(imageId) {
-//    var imgUrl;
-//    FirebaseStorage.instance.ref().child(imageId).getDownloadURL().then(
-//            (value) => setState((){
-//              imgUrl = value;
-//        })
-//    );
-//
-//    return Image.asset(imgUrl);
-//  }
 }
 
 Future<Widget> _getFirebaseImage(url) async {
@@ -192,4 +130,62 @@ Future<Widget> _getFirebaseImage(url) async {
   });
 
   return m;
+}
+
+Future<Widget> _getProducts(context, firebaseDocument) async {
+  Image productImage;
+  await FirebaseStorage.instance.ref().child(firebaseDocument['imageId']).getDownloadURL()
+  .then((value) => {
+    productImage = Image.network(value.toString())
+  });
+
+  // put the image and its name, text and price in a stack
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      productImage,
+      Flex(
+        direction: Axis.horizontal,
+        children: <Widget>[
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.55,
+          ),
+          Column(
+
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 12.5,
+              ),
+              Text(
+                firebaseDocument['name'].toString(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 34.0,
+                    fontWeight: FontWeight.bold
+                ),
+                textAlign: TextAlign.right,
+                textDirection: TextDirection.rtl,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.height / 6.5,
+                child: Text(
+                  firebaseDocument['description'].toString(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+
+                ),
+              ),
+            ],
+          ),
+        ],
+
+      ),
+    ],
+  );
+
 }
