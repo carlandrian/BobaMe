@@ -48,16 +48,16 @@ class _ProductScreenState extends State<ProductScreen> {
                   return Container(
                     child: FutureBuilder(
                       future: _getProducts(context, snapshots.data.documents[index]),//_getFirebaseImage(snapshots.data.documents[index]['imageId']),
-                      builder: (context, imageSnapshots) {
-                        if(imageSnapshots.connectionState == ConnectionState.done) {
+                      builder: (context, snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done) {
                           return Container(
                             height: MediaQuery.of(context).size.height / 1.85,
                             width: MediaQuery.of(context).size.width,
-                            child: imageSnapshots.data,
+                            child: snapshot.data,
                           );
                         }
 
-                        if(imageSnapshots.connectionState == ConnectionState.waiting) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
                           return Container(
                             height: MediaQuery.of(context).size.height / 1.85,
                             width: MediaQuery.of(context).size.width,
@@ -148,10 +148,10 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
         direction: Axis.horizontal,
         children: <Widget>[
           SizedBox(
-            width: MediaQuery.of(context).size.width / 1.55,
+            width: MediaQuery.of(context).size.width / 1.58,
           ),
           Column(
-
+//            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               SizedBox(
                 height: MediaQuery.of(context).size.height / 12.5,
@@ -160,26 +160,42 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                 firebaseDocument['name'].toString(),
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 34.0,
-                    fontWeight: FontWeight.bold
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
                 ),
                 textAlign: TextAlign.right,
-                textDirection: TextDirection.rtl,
+                textDirection: TextDirection.ltr,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.height / 6.5,
                 child: Text(
-                  firebaseDocument['description'].toString(),
+                  "${firebaseDocument['description'].toString()}\n\n"
+                      "Php ${double.parse(firebaseDocument['price'].toString()).toStringAsFixed(2)}",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.right,
-                  textDirection: TextDirection.rtl,
-
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height/12.5,
+              ),
+              InkWell(
+                child: Text(
+                  "ADD",
+                  style: TextStyle(
+                    color: Colors.pinkAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 29
+                  ),
+                ),
+                onTap: () {
+                  print("Add ${firebaseDocument['name'].toString()} to cart");
+                },
+              )
             ],
           ),
         ],
