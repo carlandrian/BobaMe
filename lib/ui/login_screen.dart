@@ -1,4 +1,5 @@
-import 'package:boba_me/ui/product.dart';
+import 'package:boba_me/ui/product_screen.dart';
+import 'package:boba_me/ui/progress_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,7 +90,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       if(loginUser != null) {
                         print("${loginUser.user.uid} is logged-in");
                         Navigator.pushNamed(context, ProductScreen.id);
+                      }else{
+                        print("unable to login");
                       }
+//                        await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text)
+//                            .then((value) => () {
+//
+//                              Navigator.pushNamed(context, BobaProgressIndicator.id);
+//                        }).whenComplete(() => (){
+//                            Navigator.pushNamed(context, ProductScreen.id);
+//                        });
                     }catch(e) {
                       print("error is ${e}");
                     }

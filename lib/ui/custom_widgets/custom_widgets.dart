@@ -1,7 +1,7 @@
-import 'package:boba_me/ui/login.dart';
+import 'package:boba_me/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../sign_up.dart';
+import '../sign_up_screen.dart';
 
 
 class BobaBannerImage extends StatelessWidget {

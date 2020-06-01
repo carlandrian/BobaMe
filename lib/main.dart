@@ -1,7 +1,9 @@
-import 'package:boba_me/ui/login.dart';
-import 'package:boba_me/ui/product.dart';
-import 'package:boba_me/ui/sign_up.dart';
-import 'package:boba_me/ui/splash.dart';
+import 'package:boba_me/ui/login_screen.dart';
+import 'package:boba_me/ui/product_add_screen.dart';
+import 'package:boba_me/ui/product_screen.dart';
+import 'package:boba_me/ui/progress_screen.dart';
+import 'package:boba_me/ui/sign_up_screen.dart';
+import 'package:boba_me/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -31,12 +33,13 @@ class MyApp extends StatelessWidget {
         )
       ),
       initialRoute: LoginScreen.id,
-//      home: SignupPage(),
-//      home: LoginPage(),
+//      initial Route: BobaProgressIndicator.id,
       routes: {
         SignupScreen.id : (context) => SignupScreen(),
         LoginScreen.id : (context) => LoginScreen(),
         ProductScreen.id : (context) => ProductScreen(),
+        BobaProgressIndicator.id : (context) => BobaProgressIndicator(),
+        ProductAddScreen.id : (context) => ProductAddScreen(),
       },
     );
   }

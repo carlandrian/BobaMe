@@ -1,3 +1,4 @@
+import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,7 +62,9 @@ class _ProductScreenState extends State<ProductScreen> {
                           return Container(
                             height: MediaQuery.of(context).size.height / 1.85,
                             width: MediaQuery.of(context).size.width,
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+                            ),
                           );
                         }
                       },
@@ -151,7 +154,6 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
             width: MediaQuery.of(context).size.width / 1.58,
           ),
           Column(
-//            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               SizedBox(
                 height: MediaQuery.of(context).size.height / 12.5,
@@ -194,14 +196,47 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                 ),
                 onTap: () {
                   print("Add ${firebaseDocument['name'].toString()} to cart");
+//                  _showAddOrderDialog(context);
+//                    Navigator.pushNamed(context, ProductAddScreen.id);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ProductAddScreen(bobaProductName: firebaseDocument['name'].toString()),
+                    ));
                 },
               )
             ],
           ),
         ],
-
       ),
     ],
   );
+}
 
+_showAddOrderDialog(BuildContext context) async {
+  var _dropDownValue = 'Milk';
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        content: DropdownButton(
+          value: _dropDownValue,
+          items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
+            child: Text(e),
+            value: e,
+          )).toList(),
+          onChanged: (value) {
+            print(value);
+            _dropDownValue = value;
+          },
+        ),
+        actions: <Widget>[
+          new RaisedButton(
+              child: Text("Add"),
+              onPressed: (){
+
+              }
+          )
+        ],
+      );
+    }
+  );
 }
