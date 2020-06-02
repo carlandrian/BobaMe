@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         primaryColor: Colors.white,
         buttonColor: Colors.pinkAccent,
+        canvasColor: Colors.black,
         inputDecorationTheme: InputDecorationTheme(
           fillColor: Colors.yellow,
         ),

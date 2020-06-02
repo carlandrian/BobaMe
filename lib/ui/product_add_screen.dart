@@ -35,12 +35,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         children: <Widget>[
           Text("How would you like your $bobaName?"),
           DropdownButton(
-
+    
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              backgroundColor: Colors.black,
+//              backgroundColor: Colors.black,
             ),
             icon: Icon(
                 Icons.text_rotation_angledown

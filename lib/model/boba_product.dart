@@ -24,6 +24,6 @@ class BobaProducts {
   factory BobaProducts.fromDatabase(List<dynamic> queryRecords) {
     List<BobaProduct> bobaProducts = List<BobaProduct>();
     bobaProducts = queryRecords.map((e) => BobaProduct.fromDatabase(e)).toList();
-    return new BobaProducts(products: bobaProducts);
+    return BobaProducts(products: bobaProducts);
   }
 }
