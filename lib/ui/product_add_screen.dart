@@ -1,6 +1,7 @@
 import 'package:boba_me/model/boba_product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'custom_widgets/custom_widgets.dart';
 
 var _dropDownValue = 'Milk';
@@ -17,8 +18,11 @@ class ProductAddScreen extends StatefulWidget {
 
 class _ProductAddScreenState extends State<ProductAddScreen> {
   final String bobaName;
-
   _ProductAddScreenState({this.bobaName});
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
+  var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
+  var toppingsDb = Firestore.instance.collection('Toppings').snapshots();
 
 
   @override
@@ -32,8 +36,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         title: BobaBannerImage(),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("How would you like your $bobaName?"),
+          Text(
+              "How would you like your $bobaName?"
+          ),
           DropdownButton(
     
             style: TextStyle(

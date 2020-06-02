@@ -1,6 +1,5 @@
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +17,7 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   final _auth = FirebaseAuth.instance;
-  var firestoreDb = Firestore.instance.collection('BobaProducts').snapshots();
+  var bobaProductsDb = Firestore.instance.collection('BobaProducts').snapshots();
 
   @override
   void initState() {
@@ -39,7 +38,7 @@ class _ProductScreenState extends State<ProductScreen> {
         title: BobaBannerImage(),
       ),
       body: StreamBuilder(
-        stream: firestoreDb,
+        stream: bobaProductsDb,
         builder: (context, snapshots) {
           if(!snapshots.hasData) return CircularProgressIndicator();
 
