@@ -23,6 +23,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
   var toppingsDb = Firestore.instance.collection('Toppings').snapshots();
+  String _milkType;
+  String _iceLevel;
+  String _topping;
 
 
   @override
@@ -35,36 +38,184 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         centerTitle: true,
         title: BobaBannerImage(),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-              "How would you like your $bobaName?"
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 28.0),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    "How would you like your ${bobaName.trim()} Boba?",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19,
+                      ),
+                ),
+              ),
+
+              // Milk type drop-down
+              StreamBuilder<QuerySnapshot>(
+                  stream: milkTypeDb,
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if(!snapshot.hasData) return Text("Loading...");
+                    return new DropdownButton<String>(
+                      iconSize: 40,
+                      iconEnabledColor: Colors.pinkAccent,
+                      focusColor: Colors.white,
+//                      selectedItemBuilder: (context) {
+//                        return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
+//                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      value: _milkType,
+                      items: snapshot.data.documents.map((map) {
+                        return DropdownMenuItem<String>(
+                          value: map['name'].toString(),
+                          child: Text(
+                            map['name'].toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        "Milk",
+                        style: TextStyle(
+                          color: Colors.white30,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _milkType = value;
+                        });
+                      },
+                    );
+                  }
+                ),
+
+              // Ice Level drop-down
+              StreamBuilder<QuerySnapshot>(
+                    stream: iceLevelDb,
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if(!snapshot.hasData) return Text("Loading...");
+                      return new DropdownButton<String>(
+                        iconSize: 40,
+                        iconEnabledColor: Colors.pinkAccent,
+                        focusColor: Colors.white,
+//                        selectedItemBuilder: (context) {
+//                          return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
+//                        },
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        value: _iceLevel,
+                        items: snapshot.data.documents.map((map) {
+                          return DropdownMenuItem<String>(
+                            value: map['name'].toString(),
+                            child: Text(
+                              map['name'].toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                            ),
+                          );
+                        }).toList(),
+                        hint: Text(
+                            "Ice",
+                              style: TextStyle(
+                                color: Colors.white30,
+                              ),
+                          ),
+                        onChanged: (value) {
+                          setState(() {
+                            _iceLevel = value;
+                            print(value);
+                          });
+                        },
+                      );
+                    }
+                ),
+
+              // Toppings drop-down
+              StreamBuilder<QuerySnapshot>(
+                    stream: toppingsDb,
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if(!snapshot.hasData) return Text("Loading...");
+                      return new DropdownButton<String>(
+                        iconSize: 40,
+                        iconEnabledColor: Colors.pinkAccent,
+                        focusColor: Colors.white,
+//                        selectedItemBuilder: (context) {
+//                          return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
+//                        },
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        value: _topping,
+                        items: snapshot.data.documents.map((map) {
+                          return DropdownMenuItem<String>(
+                            value: map['name'].toString(),
+                            child: Text(
+                              map['name'].toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        hint: Text(
+                          "Toppings",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white30,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _topping = value;
+                          });
+                        },
+                      );
+                    }
+                ),
+//          DropdownButton(
+//
+//            style: TextStyle(
+//              color: Colors.white,
+//              fontSize: 24,
+//              fontWeight: FontWeight.bold,
+//            ),
+//            icon: Icon(
+//                Icons.text_rotation_angledown
+//            ),
+//            value: _dropDownValue,
+//            items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
+//              child: Text(e),
+//              value: e,
+//            )).toList(),
+//            onChanged: (value) {
+//              print(value);
+//              setState(() {
+//                _dropDownValue = value;
+//              });
+//            },
+//          ),
+            ],
           ),
-          DropdownButton(
-    
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-//              backgroundColor: Colors.black,
-            ),
-            icon: Icon(
-                Icons.text_rotation_angledown
-            ),
-            value: _dropDownValue,
-            items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
-              child: Text(e),
-              value: e,
-            )).toList(),
-            onChanged: (value) {
-              print(value);
-              setState(() {
-                _dropDownValue = value;
-              });
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
