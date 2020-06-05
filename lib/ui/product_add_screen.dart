@@ -196,18 +196,26 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     }
                 ),
 
-            Text(
-              "Tap to select toppings",
-              style: TextStyle(
-                color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Text(
+                "Tap to select toppings",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
             // Toppings radio buttons here
-            Row(
-              children: <Widget>[
-//                CustomRadioItem(),
-//                CustomRadioItem(),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(right: 50.0, left: 50.0, top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  CustomRadioItem(buttonLabel: "Large Tapioca"),
+                  CustomRadioItem(buttonLabel: "Small Tapioca"),
+                  CustomRadioItem(buttonLabel: "Lychee Jelly"),
+                ],
+              ),
             )
             ],
           ),
@@ -217,29 +225,31 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   }
 }
 
-//class CustomRadioItem extends StatelessWidget {
+//class CustomRadioItem extends StatefulWidget {
+//  @override
+//  _CustomRadioItemState createState() => _CustomRadioItemState();
+//}
+//
+//class _CustomRadioItemState extends State<CustomRadioItem> {
 //  @override
 //  Widget build(BuildContext context) {
-//    return Center(
-//      child: Container(
-//        child: Stack(
+//    return Container(
+//      child: Stack(
 //          alignment: AlignmentDirectional.center,
-//          fit: StackFit.expand,
 //          children: <Widget>[
 //            Container(
-//              height: 50,
-//              width: 50,
+//              height: 70,
+//              width: 70,
 //              child: Center(
 //                child: Text(
-//                  "Larg\nTapioca",
+//                  "Large\nTapioca",
 //                  style: TextStyle(
-//                    color: Colors.pinkAccent,
+//                    color: Colors.white,
 //                  ),
 //                ),
 //              ),
 //              decoration: BoxDecoration(
 //              borderRadius: BorderRadius.circular(50),
-//                color: Colors.pinkAccent,
 //                border: Border.all(
 //                  color: Colors.pinkAccent,
 //                  width: 2,
@@ -247,9 +257,50 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 //                )
 //              ),
 //            )
-//          ],
-//        ),
+//          ]
 //      ),
 //    );
 //  }
 //}
+
+
+class CustomRadioItem extends StatelessWidget {
+  final String buttonLabel;
+
+  const CustomRadioItem({Key key, this.buttonLabel}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+//          fit: StackFit.expand,  // this will cause an error during run
+          children: <Widget>[
+            Container(
+              height: 70,
+              width: 70,
+              child: Center(
+                child: Text(
+                  "${buttonLabel.split(" ").elementAt(0)}\n${buttonLabel.split(" ").elementAt(1)}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                  color: Colors.pinkAccent,
+                  width: 2,
+                  style: BorderStyle.solid,
+                )
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
