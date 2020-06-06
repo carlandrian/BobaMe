@@ -198,7 +198,7 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
 //                  _showAddOrderDialog(context);
 //                    Navigator.pushNamed(context, ProductAddScreen.id);
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ProductAddScreen(bobaProductName: firebaseDocument['name'].toString()),
+                      builder: (context) => ProductAddScreen(bobaProductName: firebaseDocument['name'].toString(), bobaProductPrice: firebaseDocument['price'],),
                     ));
                 },
               )

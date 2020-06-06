@@ -11,26 +11,57 @@ var _dropDownValue = 'Milk';
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
   final String bobaProductName;
+  final int bobaProductPrice;
 
-  const ProductAddScreen({Key key, this.bobaProductName}) : super(key: key);
+  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice}) : super(key: key);
 
   @override
-  _ProductAddScreenState createState() => _ProductAddScreenState(bobaName: bobaProductName);
+  _ProductAddScreenState createState() => _ProductAddScreenState(bobaName: bobaProductName, bobaPrice: bobaProductPrice);
 }
 
 class _ProductAddScreenState extends State<ProductAddScreen> {
   final String bobaName;
-  _ProductAddScreenState({this.bobaName});
+  final int bobaPrice;
+
+  _ProductAddScreenState({this.bobaName, this.bobaPrice});
   FirebaseAuth _auth = FirebaseAuth.instance;
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
   var sweetnessDb = Firestore.instance.collection('SweetnessLevel').snapshots();
   var toppingsDb = Firestore.instance.collection('Toppings').snapshots();
+  int _totalPrice;
   String _milkType;
   String _sweetness;
   String _iceLevel;
   String _topping;
 
+  List<RadioModel> toppingsRadioList = List<RadioModel>();
+
+
+  @override
+  void initState() {
+    super.initState();
+    print("getToppings()");
+//    getToppings();
+    toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
+    toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
+    toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
+    print("Toppings added");
+  }
+
+//  void getToppings() {
+//    print("getToppings()");
+//    toppingsDb.listen((event) {
+//      event.documents.forEach((element) {
+//        print(element.data['name']);
+//        toppingsRadioList.add(
+//            RadioModel(
+//              false,element.data['name'],element.data['name']
+//            )
+//        );
+//      });
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,78 +227,206 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     }
                 ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 38.0),
-              child: Text(
-                "Tap to select toppings",
-                style: TextStyle(
-                  color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.only(top: 38.0),
+                child: Text(
+                  "Tap to select toppings",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
             // Toppings radio buttons here
-            Padding(
-              padding: const EdgeInsets.only(right: 50.0, left: 50.0, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  CustomRadioItem(buttonLabel: "Large Tapioca"),
-                  CustomRadioItem(buttonLabel: "Small Tapioca"),
-                  CustomRadioItem(buttonLabel: "Lychee Jelly"),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(right: 50.0, left: 50.0, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+  //                  FutureBuilder(
+  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 0),
+  //                    builder: (context, snapshot) {
+  //                      if(snapshot.connectionState == ConnectionState.done){
+  //                        return snapshot.data;
+  //                      }
+  //
+  //                      if(snapshot.connectionState == ConnectionState.waiting) {
+  //                        return Container(
+  //                          height: 5,
+  //                          width: 5,
+  //                          child: CircularProgressIndicator(
+  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+  //                          ),
+  //                        );
+  //                      }
+  //                    },
+  //                  ),
+  //                  FutureBuilder(
+  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 1),
+  //                    builder: (context, snapshot) {
+  //                      if(snapshot.connectionState == ConnectionState.done){
+  //                        return snapshot.data;
+  //                      }
+  //
+  //                      if(snapshot.connectionState == ConnectionState.waiting) {
+  //                        return Container(
+  //                          height: 5,
+  //                          width: 5,
+  //                          child: CircularProgressIndicator(
+  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+  //                          ),
+  //                        );
+  //                      }
+  //                    },
+  //                  ),
+  //                  FutureBuilder(
+  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 2),
+  //                    builder: (context, snapshot) {
+  //                      if(snapshot.connectionState == ConnectionState.done){
+  //                        return snapshot.data;
+  //                      }
+  //
+  //                      if(snapshot.connectionState == ConnectionState.waiting) {
+  //                        return Container(
+  //                          height: 5,
+  //                          width: 5,
+  //                          child: CircularProgressIndicator(
+  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+  //                          ),
+  //                        );
+  //                      }
+  //                    },
+  //                  ),
+
+                    InkWell(
+                      child: CustomRadioItem(toppingsRadioList[0]),
+                      borderRadius: BorderRadius.circular(100),
+                      highlightColor: Colors.pinkAccent,
+                      onTap: () {
+                          setState(() {
+                            if(toppingsRadioList[0].isSelected) {
+                              toppingsRadioList[0].isSelected = false;
+                            }else {
+                              toppingsRadioList.forEach((element) =>
+                              element.isSelected = false);
+                              toppingsRadioList[0].isSelected = true;
+                            }
+                          });
+                        },
+                    ),
+                    InkWell(
+                      child: CustomRadioItem(toppingsRadioList[1]),
+                      borderRadius: BorderRadius.circular(100),
+                      highlightColor: Colors.pinkAccent,
+                      onTap: () {
+                        setState(() {
+                          if(toppingsRadioList[1].isSelected) {
+                            toppingsRadioList[1].isSelected = false;
+                          }else {
+                            toppingsRadioList.forEach((element) =>
+                            element.isSelected = false);
+                            toppingsRadioList[1].isSelected = true;
+                          }
+                        });
+                      },
+                    ),
+                    InkWell(
+                      child: CustomRadioItem(toppingsRadioList[2]),
+                      borderRadius: BorderRadius.circular(100),
+                      highlightColor: Colors.pinkAccent,
+                      onTap: () {
+                        setState(() {
+                          if(toppingsRadioList[2].isSelected) {
+                            toppingsRadioList[2].isSelected = false;
+                          }else {
+                            toppingsRadioList.forEach((element) =>
+                            element.isSelected = false);
+                            toppingsRadioList[2].isSelected = true;
+                          }
+                        });
+                      },
+                    )
+                  ],
+                ),
               ),
-            )
+
+              // Total Price
+              Padding(
+                padding: const EdgeInsets.only(top: 48.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "TOTAL:",
+                      style: TextStyle(
+                        fontSize: 19,
+                        color: Colors.white30,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    Text(
+                      "Php ${bobaPrice.toStringAsFixed(2)}",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 48.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    print("Add");
+                  },
+                  child: Text(
+                    "     ADD     ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19
+                    ),
+                  ),
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
+
+
+  Future<Widget> getRadioButtonToppingWidget(context, radioModelList, index) async {
+    return InkWell(
+      child: CustomRadioItem(radioModelList[index]),
+      borderRadius: BorderRadius.circular(100),
+      highlightColor: Colors.pinkAccent,
+      onTap: () {
+        setState(() {
+          print(index);
+          if(radioModelList[index].isSelected) {
+            radioModelList[index].isSelected = false;
+          }
+
+          radioModelList.forEach((element) => element.isSelected = false);
+          radioModelList[index].isSelected = true;
+
+        });
+      },
+    );
+  }
+
 }
 
-//class CustomRadioItem extends StatefulWidget {
-//  @override
-//  _CustomRadioItemState createState() => _CustomRadioItemState();
-//}
-//
-//class _CustomRadioItemState extends State<CustomRadioItem> {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      child: Stack(
-//          alignment: AlignmentDirectional.center,
-//          children: <Widget>[
-//            Container(
-//              height: 70,
-//              width: 70,
-//              child: Center(
-//                child: Text(
-//                  "Large\nTapioca",
-//                  style: TextStyle(
-//                    color: Colors.white,
-//                  ),
-//                ),
-//              ),
-//              decoration: BoxDecoration(
-//              borderRadius: BorderRadius.circular(50),
-//                border: Border.all(
-//                  color: Colors.pinkAccent,
-//                  width: 2,
-//                  style: BorderStyle.solid,
-//                )
-//              ),
-//            )
-//          ]
-//      ),
-//    );
-//  }
-//}
 
 
 class CustomRadioItem extends StatelessWidget {
-  final String buttonLabel;
+  final RadioModel _radioModel;
 
-  const CustomRadioItem({Key key, this.buttonLabel}) : super(key: key);
+  const CustomRadioItem(this._radioModel);
 
   @override
   Widget build(BuildContext context) {
@@ -282,19 +441,22 @@ class CustomRadioItem extends StatelessWidget {
               width: 70,
               child: Center(
                 child: Text(
-                  "${buttonLabel.split(" ").elementAt(0)}\n${buttonLabel.split(" ").elementAt(1)}",
+                  "${_radioModel.buttonLabel.split(" ").elementAt(0)}\n${_radioModel.buttonLabel.split(" ").elementAt(1)}",
                   style: TextStyle(
+
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
               ),
               decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: Colors.pinkAccent,
-                  width: 2,
-                  style: BorderStyle.solid,
+                  borderRadius: BorderRadius.circular(50),
+                  color: _radioModel.isSelected ? Colors.pinkAccent : Colors.black,
+//                  color: Colors.pinkAccent,
+                  border: Border.all(
+                    color: Colors.pinkAccent,
+                    width: 2,
+                    style: BorderStyle.solid,
                 )
               ),
             )
@@ -303,4 +465,12 @@ class CustomRadioItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class RadioModel {
+  bool isSelected;
+  final String buttonLabel;
+  final String value;
+
+  RadioModel(this.isSelected, this.buttonLabel, this. value);
 }
