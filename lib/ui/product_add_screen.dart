@@ -443,7 +443,6 @@ class CustomRadioItem extends StatelessWidget {
                 child: Text(
                   "${_radioModel.buttonLabel.split(" ").elementAt(0)}\n${_radioModel.buttonLabel.split(" ").elementAt(1)}",
                   style: TextStyle(
-
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),

@@ -18,6 +18,8 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final _auth = FirebaseAuth.instance;
   var bobaProductsDb = Firestore.instance.collection('BobaProducts').snapshots();
+  var _orderCount = 10;
+
 
   @override
   void initState() {
@@ -94,7 +96,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   },
               ),
               InkWell(
-                  child: Image.asset("images/shopping_cart_icon.png"),
+                  child: _orderCount > 0 ? ShoppingCartCount() : Image.asset("images/shopping_cart_icon.png"),
                   onTap: () {
                     print('shopping cart clicked');
                   },
@@ -120,6 +122,39 @@ class _ProductScreenState extends State<ProductScreen> {
     super.dispose();
     _auth.signOut();
     print("user has signed-out");
+  }
+}
+
+class ShoppingCartCount extends StatelessWidget {
+  const ShoppingCartCount({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topRight,
+      children: <Widget>[
+          Image.asset("images/shopping_cart_icon.png"),
+          Container(
+            height: 17,
+            width: 17,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.pinkAccent
+            ),
+            child: Text(
+                "1",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold
+                ),
+            ),
+          )
+      ],
+    );
   }
 }
 
