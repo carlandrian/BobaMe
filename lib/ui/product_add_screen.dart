@@ -1,3 +1,4 @@
+import 'package:boba_me/model/boba_order.dart';
 import 'package:boba_me/model/boba_product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,23 +8,30 @@ import 'package:flutter/rendering.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 var _dropDownValue = 'Milk';
+BobaOrder _bobaOrder = BobaOrder();
 
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
   final String bobaProductName;
   final int bobaProductPrice;
+  final bobaOrder;
 
-  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice}) : super(key: key);
+  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.bobaOrder}) : super(key: key);
 
   @override
-  _ProductAddScreenState createState() => _ProductAddScreenState(bobaName: bobaProductName, bobaPrice: bobaProductPrice);
+  _ProductAddScreenState createState() => _ProductAddScreenState(
+      bobaName: bobaProductName,
+      bobaPrice: bobaProductPrice,
+      bobaOrder: bobaOrder,
+  );
 }
 
 class _ProductAddScreenState extends State<ProductAddScreen> {
   final String bobaName;
   final int bobaPrice;
+  final BobaOrder bobaOrder;
 
-  _ProductAddScreenState({this.bobaName, this.bobaPrice});
+  _ProductAddScreenState({this.bobaName, this.bobaPrice, this.bobaOrder});
   FirebaseAuth _auth = FirebaseAuth.instance;
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
@@ -376,7 +384,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 padding: const EdgeInsets.only(top: 48.0),
                 child: RaisedButton(
                   onPressed: () {
-                    print("Add");
+                    Navigator.pop(context);
                   },
                   child: Text(
                     "     ADD     ",

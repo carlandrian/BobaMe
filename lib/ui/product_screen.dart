@@ -1,3 +1,4 @@
+import 'package:boba_me/model/boba_order.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 
+BobaOrder _bobaOrder = BobaOrder();
 
 class ProductScreen extends StatefulWidget {
   static const String id = "product_screen";
@@ -111,7 +113,8 @@ class _ProductScreenState extends State<ProductScreen> {
   void isCurrentUserLoggedIn() async {
     final currentUser = await _auth.currentUser();
     if(currentUser != null) {
-      print("user is logged in");
+      print("${currentUser.uid} is logged in");
+      _bobaOrder.customerInfoId = currentUser.uid;
     }else{
 
     }
@@ -233,7 +236,11 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
 //                  _showAddOrderDialog(context);
 //                    Navigator.pushNamed(context, ProductAddScreen.id);
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ProductAddScreen(bobaProductName: firebaseDocument['name'].toString(), bobaProductPrice: firebaseDocument['price'],),
+                      builder: (context) => ProductAddScreen(
+                        bobaProductName: firebaseDocument['name'].toString(),
+                        bobaProductPrice: firebaseDocument['price'],
+                        bobaOrder: _bobaOrder,
+                      ),
                     ));
                 },
               )
