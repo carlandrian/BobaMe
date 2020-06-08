@@ -9,7 +9,8 @@ import 'package:flutter/rendering.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 
-BobaOrder _bobaOrder = BobaOrder();
+BobaOrder bobaOrder;
+var _orderCount = 0;
 
 class ProductScreen extends StatefulWidget {
   static const String id = "product_screen";
@@ -20,17 +21,19 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final _auth = FirebaseAuth.instance;
   var bobaProductsDb = Firestore.instance.collection('BobaProducts').snapshots();
-  var _orderCount = 10;
+//  var _orderCount = 0;
 
 
   @override
   void initState() {
     super.initState();
     isCurrentUserLoggedIn();
+    bobaOrder = BobaOrder();
+    bobaOrder.orderCount = _orderCount;
+    print("orderCount = ${bobaOrder.orderCount}");
+
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,9 +101,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   },
               ),
               InkWell(
-                  child: _orderCount > 0 ? ShoppingCartCount() : Image.asset("images/shopping_cart_icon.png"),
+                  child: bobaOrder.orderCount > 0 ? ShoppingCartWithCount() : Image.asset("images/shopping_cart_icon.png"),
                   onTap: () {
                     print('shopping cart clicked');
+                    setState(() {
+
+                    });
                   },
               ),
             ],
@@ -114,7 +120,7 @@ class _ProductScreenState extends State<ProductScreen> {
     final currentUser = await _auth.currentUser();
     if(currentUser != null) {
       print("${currentUser.uid} is logged in");
-      _bobaOrder.customerInfoId = currentUser.uid;
+      bobaOrder.customerInfoId = currentUser.uid;
     }else{
 
     }
@@ -128,10 +134,63 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 }
 
-class ShoppingCartCount extends StatelessWidget {
-  const ShoppingCartCount({
-    Key key,
+//class ShoppingCartWithCount extends StatefulWidget {
+//  final int count;
+//  ShoppingCartWithCount({this.count});
+//  @override
+//  _ShoppingCartWithCountState createState() => _ShoppingCartWithCountState();
+//}
+//
+//class _ShoppingCartWithCountState extends State<ShoppingCartWithCount> {
+//  final int count;
+//  int counter;
+//  _ShoppingCartWithCountState({this.count});
+//
+//  refresh(){
+//    setState(() {
+//      counter++;
+//    });
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Stack(
+//      alignment: Alignment.topRight,
+//      children: <Widget>[
+//        Image.asset("images/shopping_cart_icon.png"),
+//        Container(
+//          height: 21,
+//          width: 21,
+//          decoration: BoxDecoration(
+//              shape: BoxShape.circle,
+//              color: Colors.pinkAccent
+//          ),
+//          child: Text(
+//            bobaOrder.orderCount.toString(),
+//            textAlign: TextAlign.center,
+//            style: TextStyle(
+//                color: Colors.white,
+//                fontSize: 15,
+//                fontWeight: FontWeight.bold
+//            ),
+//          ),
+//        )
+//      ],
+//    );
+//  }
+//}
+
+class ShoppingCartWithCount extends StatelessWidget {
+  final int count;
+  const ShoppingCartWithCount({
+    Key key, this.count,
   }) : super(key: key);
+
+  refresh(){
+    setState(){
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,14 +199,14 @@ class ShoppingCartCount extends StatelessWidget {
       children: <Widget>[
           Image.asset("images/shopping_cart_icon.png"),
           Container(
-            height: 17,
-            width: 17,
+            height: 21,
+            width: 21,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.pinkAccent
             ),
             child: Text(
-                "1",
+                bobaOrder.orderCount.toString(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -233,15 +292,17 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                 ),
                 onTap: () {
                   print("Add ${firebaseDocument['name'].toString()} to cart");
-//                  _showAddOrderDialog(context);
-//                    Navigator.pushNamed(context, ProductAddScreen.id);
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) => ProductAddScreen(
                         bobaProductName: firebaseDocument['name'].toString(),
                         bobaProductPrice: firebaseDocument['price'],
-                        bobaOrder: _bobaOrder,
+                        bobaOrder: bobaOrder,
                       ),
-                    ));
+                    )).then((value) {
+                      setState(){
+                        print('here $value');
+                      }
+                    });
                 },
               )
             ],

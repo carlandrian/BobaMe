@@ -1,5 +1,5 @@
 import 'package:boba_me/model/boba_order.dart';
-import 'package:boba_me/model/boba_product.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 var _dropDownValue = 'Milk';
-BobaOrder _bobaOrder = BobaOrder();
+//BobaOrder _bobaOrder = BobaOrder();
 
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
@@ -54,7 +54,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
-    print("Toppings added");
+    print("BobaOrder.orderCount ${bobaOrder.orderCount}");
   }
 
 //  void getToppings() {
@@ -250,61 +250,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-  //                  FutureBuilder(
-  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 0),
-  //                    builder: (context, snapshot) {
-  //                      if(snapshot.connectionState == ConnectionState.done){
-  //                        return snapshot.data;
-  //                      }
-  //
-  //                      if(snapshot.connectionState == ConnectionState.waiting) {
-  //                        return Container(
-  //                          height: 5,
-  //                          width: 5,
-  //                          child: CircularProgressIndicator(
-  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
-  //                          ),
-  //                        );
-  //                      }
-  //                    },
-  //                  ),
-  //                  FutureBuilder(
-  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 1),
-  //                    builder: (context, snapshot) {
-  //                      if(snapshot.connectionState == ConnectionState.done){
-  //                        return snapshot.data;
-  //                      }
-  //
-  //                      if(snapshot.connectionState == ConnectionState.waiting) {
-  //                        return Container(
-  //                          height: 5,
-  //                          width: 5,
-  //                          child: CircularProgressIndicator(
-  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
-  //                          ),
-  //                        );
-  //                      }
-  //                    },
-  //                  ),
-  //                  FutureBuilder(
-  //                    future: getRadioButtonToppingWidget(context, toppingsRadioList, 2),
-  //                    builder: (context, snapshot) {
-  //                      if(snapshot.connectionState == ConnectionState.done){
-  //                        return snapshot.data;
-  //                      }
-  //
-  //                      if(snapshot.connectionState == ConnectionState.waiting) {
-  //                        return Container(
-  //                          height: 5,
-  //                          width: 5,
-  //                          child: CircularProgressIndicator(
-  //                            valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
-  //                          ),
-  //                        );
-  //                      }
-  //                    },
-  //                  ),
-
                     InkWell(
                       child: CustomRadioItem(toppingsRadioList[0]),
                       borderRadius: BorderRadius.circular(100),
@@ -384,6 +329,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 padding: const EdgeInsets.only(top: 48.0),
                 child: RaisedButton(
                   onPressed: () {
+                    bobaOrder.orderCount++;
+                    print("bobaOrder.count = ${bobaOrder.orderCount}");
                     Navigator.pop(context);
                   },
                   child: Text(
