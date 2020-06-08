@@ -275,7 +275,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                               toppingsRadioList[0].isSelected = true;
                               toppingsPrice += 10;
                             }
-
+                            _topping = toppingsRadioList[0].value;
                           });
                         },
                     ),
@@ -295,7 +295,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             toppingsRadioList[1].isSelected = true;
                             toppingsPrice += 10;
                           }
-
+                          _topping = toppingsRadioList[1].value;
                         });
                       },
                     ),
@@ -315,7 +315,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             toppingsRadioList[2].isSelected = true;
                             toppingsPrice += 10;
                           }
-
+                          _topping = toppingsRadioList[2].value;
                         });
                       },
                     )
@@ -351,9 +351,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 child: orderComplete ? RaisedButton(
                   onPressed: () {
                     // Todo: Rewrite this, put the values in a constructor of BobaOrderModel
+                    bobaOrder.bobaProductName = bobaName;
                     bobaOrder.milkTypeName = _milkType;
                     bobaOrder.sweetnessLevelName = _sweetness;
                     bobaOrder.iceLevelName = _iceLevel;
+                    bobaOrder.toppingsName = _topping;
+
 
                     bobaCartModel.addOrder(bobaOrder);
                     print("${bobaCartModel.bobaOrders[0].milkTypeName}");
