@@ -39,6 +39,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   String _iceLevel;
   String _topping;
   int toppingsPrice = 0;
+  bool orderComplete = false;
 
   List<RadioModel> toppingsRadioList = List<RadioModel>();
 
@@ -138,7 +139,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       onChanged: (value) {
                         setState(() {
                           _milkType = value;
-
+                          if(_iceLevel != null && _sweetness != null) {
+                            orderComplete = true;
+                          }
                         });
                       },
                     );
@@ -185,6 +188,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       onChanged: (value) {
                         setState(() {
                           _sweetness = value;
+                          if(_iceLevel != null && _milkType != null) {
+                            orderComplete = true;
+                          }
                         });
                       },
                     );
@@ -229,7 +235,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         onChanged: (value) {
                           setState(() {
                             _iceLevel = value;
-
+                            if(_sweetness != null && _milkType != null) {
+                              orderComplete = true;
+                            }
                           });
                         },
                       );
@@ -340,7 +348,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
               Padding(
                 padding: const EdgeInsets.only(top: 48.0),
-                child: RaisedButton(
+                child: orderComplete ? RaisedButton(
                   onPressed: () {
                     // Todo: Rewrite this, put the values in a constructor of BobaOrderModel
                     bobaOrder.milkTypeName = _milkType;
@@ -359,6 +367,18 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     ),
                   ),
                   textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ) : RaisedButton(
+                  child: Text(
+                    "     ADD     ",
+                    style: TextStyle(
+                        color: Colors.white30,
+                        fontSize: 19
+                    ),
+                  ),
+                  textColor: Colors.white30,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
