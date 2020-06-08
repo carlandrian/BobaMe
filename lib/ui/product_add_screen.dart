@@ -1,37 +1,35 @@
-import 'package:boba_me/model/boba_order.dart';
+import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/model/boba_order_model.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 var _dropDownValue = 'Milk';
-//BobaOrder _bobaOrder = BobaOrder();
 
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
   final String bobaProductName;
   final int bobaProductPrice;
-  final bobaOrder;
 
-  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.bobaOrder}) : super(key: key);
+  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice}) : super(key: key);
 
   @override
   _ProductAddScreenState createState() => _ProductAddScreenState(
       bobaName: bobaProductName,
       bobaPrice: bobaProductPrice,
-      bobaOrder: bobaOrder,
   );
 }
 
 class _ProductAddScreenState extends State<ProductAddScreen> {
   final String bobaName;
   final int bobaPrice;
-  final BobaOrder bobaOrder;
 
-  _ProductAddScreenState({this.bobaName, this.bobaPrice, this.bobaOrder});
+  _ProductAddScreenState({this.bobaName, this.bobaPrice});
   FirebaseAuth _auth = FirebaseAuth.instance;
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
@@ -54,7 +52,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
-    print("BobaOrder.orderCount ${bobaOrder.orderCount}");
+//    print("BobaOrder.orderCount ${bobaOrder.orderCount}");
   }
 
 //  void getToppings() {
@@ -73,6 +71,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var bobaCartModel = Provider.of<BobaCartModel>(context);
+    var bobaOrder = BobaOrderModel();
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -329,8 +330,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 padding: const EdgeInsets.only(top: 48.0),
                 child: RaisedButton(
                   onPressed: () {
-                    bobaOrder.orderCount++;
-                    print("bobaOrder.count = ${bobaOrder.orderCount}");
+                    bobaCartModel.addOrder(bobaOrder);
+//                    print("bobaOrder.count = ${bobaOrder.orderCount}");
                     Navigator.pop(context);
                   },
                   child: Text(

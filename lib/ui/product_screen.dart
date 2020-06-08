@@ -1,4 +1,5 @@
-import 'package:boba_me/model/boba_order.dart';
+import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/model/boba_order_model.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,11 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'custom_widgets/custom_widgets.dart';
-
-
-BobaOrder bobaOrder;
-var _orderCount = 0;
 
 class ProductScreen extends StatefulWidget {
   static const String id = "product_screen";
@@ -28,14 +26,12 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     isCurrentUserLoggedIn();
-    bobaOrder = BobaOrder();
-    bobaOrder.orderCount = _orderCount;
-    print("orderCount = ${bobaOrder.orderCount}");
-
   }
 
   @override
   Widget build(BuildContext context) {
+    var bobaCartModel = Provider.of<BobaCartModel>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -101,7 +97,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   },
               ),
               InkWell(
-                  child: bobaOrder.orderCount > 0 ? ShoppingCartWithCount() : Image.asset("images/shopping_cart_icon.png"),
+                  child: bobaCartModel.orderCount > 0 ? ShoppingCartWithCount(count: bobaCartModel.orderCount) : Image.asset("images/shopping_cart_icon.png"),
                   onTap: () {
                     print('shopping cart clicked');
                     setState(() {
@@ -120,7 +116,7 @@ class _ProductScreenState extends State<ProductScreen> {
     final currentUser = await _auth.currentUser();
     if(currentUser != null) {
       print("${currentUser.uid} is logged in");
-      bobaOrder.customerInfoId = currentUser.uid;
+//      bobaOrder.customerInfoId = currentUser.uid;
     }else{
 
     }
@@ -206,7 +202,7 @@ class ShoppingCartWithCount extends StatelessWidget {
               color: Colors.pinkAccent
             ),
             child: Text(
-                bobaOrder.orderCount.toString(),
+                count.toString(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -295,14 +291,9 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) => ProductAddScreen(
                         bobaProductName: firebaseDocument['name'].toString(),
-                        bobaProductPrice: firebaseDocument['price'],
-                        bobaOrder: bobaOrder,
+                        bobaProductPrice: firebaseDocument['price']
                       ),
-                    )).then((value) {
-                      setState(){
-                        print('here $value');
-                      }
-                    });
+                    ));
                 },
               )
             ],

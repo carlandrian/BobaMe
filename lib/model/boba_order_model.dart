@@ -3,7 +3,7 @@
   inserted in every order status step (see order statuses for orderStatus field).
  */
 
-class BobaOrder {
+class BobaOrderModel {
   String id;
   String bobaProductId;
   String bobaProductName;
@@ -23,4 +23,5 @@ class BobaOrder {
   String toppingsId;
   String toppingsName;
   int orderCount;
+
 }

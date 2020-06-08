@@ -1,13 +1,13 @@
-class BobaProduct {
+class BobaProductModel {
   String name;
   String description;
   double price;
   String imageId;
 
-  BobaProduct({this.name, this.description, this.price, this.imageId});
+  BobaProductModel({this.name, this.description, this.price, this.imageId});
 
-  factory BobaProduct.fromDatabase(Map<String, dynamic> dbrecord) {
-    return BobaProduct(
+  factory BobaProductModel.fromDatabase(Map<String, dynamic> dbrecord) {
+    return BobaProductModel(
       name: dbrecord['name'],
       description: dbrecord['description'],
       price: dbrecord['price'],
@@ -17,13 +17,13 @@ class BobaProduct {
 }
 
 class BobaProducts {
-  final List<BobaProduct> products;
+  final List<BobaProductModel> products;
 
   BobaProducts({this.products});
 
   factory BobaProducts.fromDatabase(List<dynamic> queryRecords) {
-    List<BobaProduct> bobaProducts = List<BobaProduct>();
-    bobaProducts = queryRecords.map((e) => BobaProduct.fromDatabase(e)).toList();
+    List<BobaProductModel> bobaProducts = List<BobaProductModel>();
+    bobaProducts = queryRecords.map((e) => BobaProductModel.fromDatabase(e)).toList();
     return BobaProducts(products: bobaProducts);
   }
 }

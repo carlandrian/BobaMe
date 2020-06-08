@@ -1,4 +1,4 @@
-import 'package:boba_me/model/boba_product.dart';
+import 'package:boba_me/model/boba_product_model.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseAdapter {

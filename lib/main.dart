@@ -1,3 +1,4 @@
+import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/ui/login_screen.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:boba_me/ui/product_screen.dart';
@@ -5,9 +6,15 @@ import 'package:boba_me/ui/progress_screen.dart';
 import 'package:boba_me/ui/sign_up_screen.dart';
 import 'package:boba_me/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+          create: (context) => BobaCartModel(),
+          child: MyApp()
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
