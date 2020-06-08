@@ -99,7 +99,7 @@ class _ProductScreenState extends State<ProductScreen> {
               InkWell(
                   child: bobaCartModel.orderCount > 0 ? ShoppingCartWithCount(count: bobaCartModel.orderCount) : Image.asset("images/shopping_cart_icon.png"),
                   onTap: () {
-                    print('shopping cart clicked');
+                    print('shopping cart item 1 ${bobaCartModel.bobaOrders[0].milkTypeName}');
                     setState(() {
 
                     });

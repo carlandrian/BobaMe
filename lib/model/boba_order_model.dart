@@ -8,9 +8,9 @@ class BobaOrderModel {
   String bobaProductId;
   String bobaProductName;
   String customerInfoId;
-  String iceLevelId;
+//  String iceLevelId;
   String iceLevelName;
-  String milkTypeId;
+//  String milkTypeId;
   String milkTypeName;
   DateTime orderStatusStartDateTime;    // Start date time of order status
   DateTime orderStatusEndDateTime;      // End date time of order status
@@ -19,7 +19,7 @@ class BobaOrderModel {
   String paymentStatusDateTime;
   String paymentType;                   // Cash / Credit
   String sweetnessLevelName;
-  String sweetnessLevelId;
+//  String sweetnessLevelId;
   String toppingsId;
   String toppingsName;
   int orderCount;

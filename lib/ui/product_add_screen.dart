@@ -9,8 +9,6 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'custom_widgets/custom_widgets.dart';
 
-var _dropDownValue = 'Milk';
-
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
   final String bobaProductName;
@@ -40,6 +38,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   String _sweetness;
   String _iceLevel;
   String _topping;
+  int toppingsPrice = 0;
 
   List<RadioModel> toppingsRadioList = List<RadioModel>();
 
@@ -139,6 +138,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       onChanged: (value) {
                         setState(() {
                           _milkType = value;
+
                         });
                       },
                     );
@@ -229,7 +229,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         onChanged: (value) {
                           setState(() {
                             _iceLevel = value;
-                            print(value);
+
                           });
                         },
                       );
@@ -239,7 +239,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 38.0),
                 child: Text(
-                  "Tap to select toppings",
+                  "Tap to select toppings. Php10 per topping",
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -259,11 +259,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           setState(() {
                             if(toppingsRadioList[0].isSelected) {
                               toppingsRadioList[0].isSelected = false;
+                              toppingsPrice -= 10;
                             }else {
+                              toppingsPrice = 0;
                               toppingsRadioList.forEach((element) =>
                               element.isSelected = false);
                               toppingsRadioList[0].isSelected = true;
+                              toppingsPrice += 10;
                             }
+
                           });
                         },
                     ),
@@ -275,11 +279,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         setState(() {
                           if(toppingsRadioList[1].isSelected) {
                             toppingsRadioList[1].isSelected = false;
+                            toppingsPrice -= 10;
                           }else {
+                            toppingsPrice = 0;
                             toppingsRadioList.forEach((element) =>
                             element.isSelected = false);
                             toppingsRadioList[1].isSelected = true;
+                            toppingsPrice += 10;
                           }
+
                         });
                       },
                     ),
@@ -291,11 +299,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         setState(() {
                           if(toppingsRadioList[2].isSelected) {
                             toppingsRadioList[2].isSelected = false;
+                            toppingsPrice -= 10;
                           }else {
+                            toppingsPrice = 0;
                             toppingsRadioList.forEach((element) =>
                             element.isSelected = false);
                             toppingsRadioList[2].isSelected = true;
+                            toppingsPrice += 10;
                           }
+
                         });
                       },
                     )
@@ -317,7 +329,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                     ),
                     Text(
-                      "Php ${bobaPrice.toStringAsFixed(2)}",
+                      "Php ${(toppingsPrice + bobaPrice).toStringAsFixed(2)}",
                       style: TextStyle(
                         color: Colors.white
                       ),
@@ -330,8 +342,13 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 padding: const EdgeInsets.only(top: 48.0),
                 child: RaisedButton(
                   onPressed: () {
+                    // Todo: Rewrite this, put the values in a constructor of BobaOrderModel
+                    bobaOrder.milkTypeName = _milkType;
+                    bobaOrder.sweetnessLevelName = _sweetness;
+                    bobaOrder.iceLevelName = _iceLevel;
+
                     bobaCartModel.addOrder(bobaOrder);
-//                    print("bobaOrder.count = ${bobaOrder.orderCount}");
+                    print("${bobaCartModel.bobaOrders[0].milkTypeName}");
                     Navigator.pop(context);
                   },
                   child: Text(
