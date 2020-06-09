@@ -1,4 +1,5 @@
 import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,84 +47,136 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               Row(
                 children: <Widget>[
-                  Flex(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              "${bobaCart.bobaOrders[0].milkTypeName}",
-                              style: TextStyle(
-                                  color: Colors.white30,
-                                  fontSize: 15
-                              ),
-                            ),
-                            Text(
-                              "${bobaCart.bobaOrders[0].sweetnessLevelName}",
-                              style: TextStyle(
-                                  color: Colors.white30,
-                                  fontSize: 15
-                              ),
-                            ),
-                            Text(
-                              "${bobaCart.bobaOrders[0].iceLevelName}",
-                              style: TextStyle(
-                                  color: Colors.white30,
-                                  fontSize: 15
-                              ),
-                            ),
-                            Text(
-                              bobaCart.bobaOrders[0].toppingsName == null ? "No Toppings"
-                                  : "${bobaCart.bobaOrders[0].toppingsName}",
-                              style: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 15
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 18.0, left: 12),
-                              child: Row(
-                                children: <Widget>[
-                                  InkWell(
-                                    child: Text(
-                                      "EDIT",
-                                      style: TextStyle(
-                                        color: Colors.pinkAccent,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  InkWell(
-                                    child: Text(
-                                        "REMOVE",
-                                      style: TextStyle(
-                                          color: Colors.pinkAccent,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "QTY"
+                            "${bobaCart.bobaOrders[0].milkTypeName} \n"
+                                "${bobaCart.bobaOrders[0].sweetnessLevelName} \n"
+                                "${bobaCart.bobaOrders[0].iceLevelName} \n",
+
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
                           ),
+//                          Text(
+//                            "${bobaCart.bobaOrders[0].sweetnessLevelName}",
+//                            style: TextStyle(
+//                                color: Colors.white30,
+//                                fontSize: 15
+//                            ),
+//                          ),
+//                          Text(
+//                            "${bobaCart.bobaOrders[0].iceLevelName}",
+//                            style: TextStyle(
+//                                color: Colors.white30,
+//                                fontSize: 15
+//                            ),
+//                          ),
                           Text(
-                            "- ${bobaCart.orderCount} +"
+                            bobaCart.bobaOrders[0].toppingsName == null ? "No Toppings"
+                                : "${bobaCart.bobaOrders[0].toppingsName}",
+                            style: TextStyle(
+                              color: Colors.white30,
+                              fontSize: 15
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 18.0, left: 12),
+                            child: Row(
+                              children: <Widget>[
+                                InkWell(
+                                  child: Text(
+                                    "EDIT",
+                                    style: TextStyle(
+                                      color: Colors.pinkAccent,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                InkWell(
+                                  child: Text(
+                                      "REMOVE",
+                                    style: TextStyle(
+                                        color: Colors.pinkAccent,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           )
                         ],
-                      )
-                    ],
+                      ),
+//                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "QTY",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                              ),
+                            ],
+//                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "-",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pinkAccent,
+                                    fontSize: 37
+                                ),
+                              ),
+                              Container(
+                                width: 60,
+                                height: 60,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "${bobaCart.orderCount}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 37
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white30
+                                ),
+                              ),
+                              Text(
+                                "+",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pinkAccent,
+                                    fontSize: 37
+                                ),
+                              )
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          )
+                        ],
+                      ),
+//                    ),
                   )
                 ],
               )
