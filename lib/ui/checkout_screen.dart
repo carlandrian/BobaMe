@@ -53,29 +53,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "${bobaCart.bobaOrders[0].milkTypeName} \n"
-                                "${bobaCart.bobaOrders[0].sweetnessLevelName} \n"
-                                "${bobaCart.bobaOrders[0].iceLevelName} \n",
+                            "${bobaCart.bobaOrders[0].milkTypeName}",
+//                                "${bobaCart.bobaOrders[0].sweetnessLevelName} \n"
+//                                "${bobaCart.bobaOrders[0].iceLevelName} \n",
 
                             style: TextStyle(
                                 color: Colors.white30,
                                 fontSize: 15
                             ),
                           ),
-//                          Text(
-//                            "${bobaCart.bobaOrders[0].sweetnessLevelName}",
-//                            style: TextStyle(
-//                                color: Colors.white30,
-//                                fontSize: 15
-//                            ),
-//                          ),
-//                          Text(
-//                            "${bobaCart.bobaOrders[0].iceLevelName}",
-//                            style: TextStyle(
-//                                color: Colors.white30,
-//                                fontSize: 15
-//                            ),
-//                          ),
+                          Text(
+                            "${bobaCart.bobaOrders[0].sweetnessLevelName}",
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
+                          ),
+                          Text(
+                            "${bobaCart.bobaOrders[0].iceLevelName}",
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
+                          ),
                           Text(
                             bobaCart.bobaOrders[0].toppingsName == null ? "No Toppings"
                                 : "${bobaCart.bobaOrders[0].toppingsName}",
