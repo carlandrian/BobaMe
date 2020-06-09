@@ -48,30 +48,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   void initState() {
     super.initState();
     print("getToppings()");
-//    getToppings();
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
 //    print("BobaOrder.orderCount ${bobaOrder.orderCount}");
   }
 
-//  void getToppings() {
-//    print("getToppings()");
-//    toppingsDb.listen((event) {
-//      event.documents.forEach((element) {
-//        print(element.data['name']);
-//        toppingsRadioList.add(
-//            RadioModel(
-//              false,element.data['name'],element.data['name']
-//            )
-//        );
-//      });
-//    });
-//  }
-
   @override
   Widget build(BuildContext context) {
-    var bobaCartModel = Provider.of<BobaCartModel>(context);
+    var bobaCart = Provider.of<BobaCartModel>(context);
     var bobaOrder = BobaOrderModel();
 
     return Scaffold(
@@ -358,8 +343,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     bobaOrder.toppingsName = _topping;
 
 
-                    bobaCartModel.addOrder(bobaOrder);
-                    print("${bobaCartModel.bobaOrders[0].milkTypeName}");
+                    bobaCart.addOrder(bobaOrder);
+                    print("${bobaCart.bobaOrders[0].milkTypeName}");
                     Navigator.pop(context);
                   },
                   child: Text(
