@@ -126,7 +126,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 child: Text(
                                   "QTY",
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     fontSize: 17,
                                   ),
