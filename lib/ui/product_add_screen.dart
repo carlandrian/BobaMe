@@ -343,7 +343,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     bobaOrder.toppingsName = _topping;
 
 
-                    bobaCart.addOrder(bobaOrder);
+                    bobaCart.addOrderToList(bobaOrder);
+                    bobaCart.addOrderToMap(bobaOrder);
+                    print("order count in Cart Map: ${bobaCart.orderCountMap}");
                     print("${bobaCart.bobaOrders[0].milkTypeName}");
                     Navigator.pop(context);
                   },
