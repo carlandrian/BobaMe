@@ -22,6 +22,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _nextButtonEnabled = true;
         });
       }
+
+      if(_scrollController.position.atEdge){
+        print("atEdge");
+      }
+
+
+      if(!_scrollController.position.haveDimensions){
+        setState(() {
+          _nextButtonEnabled = true;
+        });
+      }
     });
     super.initState();
   }
@@ -44,15 +55,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       ),
       body: ListView.builder(
-          controller: _scrollController,
-          itemCount: bobaCart.bobaOrdersMap.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 18.0),
-              child: Column(
-                children: <Widget>[
-                  BobaOrder(bobaCart: bobaCart, index: index,),
-                  // add line widget
+        controller: _scrollController,
+        itemCount: bobaCart.bobaOrdersMap.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 18.0),
+            child: Column(
+              children: <Widget>[
+                BobaOrder(bobaCart: bobaCart, index: index,),
+                // add line widget
 //                  Padding(
 //                    padding: const EdgeInsets.symmetric(vertical: 15.0),
 //                    child: Container(
@@ -63,10 +74,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 //                      ),
 //                    ),
 //                  )
-                ],
-              ),
-            );
-          }),
+              ],
+            ),
+          );
+        },
+        physics: BouncingScrollPhysics(),
+      ),
       bottomNavigationBar: Container(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -105,7 +118,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                onPressed: _nextButtonEnabled ? () {
+                onPressed: _nextButtonEnabled || (bobaCart.bobaOrdersMap.length < 3)? () {
                 } : null,
               )
             ],
@@ -160,33 +173,45 @@ class BobaOrder extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            "${bobaCart.bobaOrdersMap[key].milkTypeName}",
-                            style: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 15
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              "${bobaCart.bobaOrdersMap[key].milkTypeName}",
+                              style: TextStyle(
+                                  color: Colors.white30,
+                                  fontSize: 15
+                              ),
                             ),
                           ),
-                          Text(
-                            "${bobaCart.bobaOrdersMap[key].sweetnessLevelName}",
-                            style: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 15
+                          Padding(
+                            padding: const EdgeInsets.only(top:4.0),
+                            child: Text(
+                              "${bobaCart.bobaOrdersMap[key].sweetnessLevelName}",
+                              style: TextStyle(
+                                  color: Colors.white30,
+                                  fontSize: 15
+                              ),
                             ),
                           ),
-                          Text(
-                            "${bobaCart.bobaOrdersMap[key].iceLevelName}",
-                            style: TextStyle(
-                                color: Colors.white30,
-                                fontSize: 15
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              "${bobaCart.bobaOrdersMap[key].iceLevelName}",
+                              style: TextStyle(
+                                  color: Colors.white30,
+                                  fontSize: 15
+                              ),
                             ),
                           ),
-                          Text(
-                            bobaCart.bobaOrdersMap[key].toppingsName.toString().isEmpty ? "No Toppings"
-                                : "${bobaCart.bobaOrdersMap[key].toppingsName}",
-                            style: TextStyle(
-                              color: Colors.white30,
-                              fontSize: 15
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              bobaCart.bobaOrdersMap[key].toppingsName.toString().isEmpty ? "No Toppings"
+                                  : "${bobaCart.bobaOrdersMap[key].toppingsName}",
+                              style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                              ),
                             ),
                           ),
                           Padding(
@@ -298,36 +323,48 @@ class BobaOrder extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    "Subtotal ..............................${bobaCart.subTotal.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white30,
-                      letterSpacing: 2
-                    ),
-                  ),
-                  Text(
-                    "Taxes ..................................${bobaCart.taxes.toStringAsFixed(2)}",
-                    style: TextStyle(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      "Subtotal ..............................${bobaCart.subTotal.toStringAsFixed(2)}",
+                      style: TextStyle(
                         fontSize: 16,
                         color: Colors.white30,
                         letterSpacing: 2
+                      ),
                     ),
                   ),
-                  Text(
-                    "Delivery Fee .........................${bobaCart.deliveryFee.toStringAsFixed(2)}",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white30,
-                        letterSpacing: 2
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      "Taxes ..................................${bobaCart.taxes.toStringAsFixed(2)}",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white30,
+                          letterSpacing: 2
+                      ),
                     ),
                   ),
-                  Text(
-                    "Order Total ........................... ${bobaCart.orderTotal.toStringAsFixed(2)}",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        letterSpacing: 2
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      "Delivery Fee .........................${bobaCart.deliveryFee.toStringAsFixed(2)}",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white30,
+                          letterSpacing: 2
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      "Order Total ........................... ${bobaCart.orderTotal.toStringAsFixed(2)}",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          letterSpacing: 2
+                      ),
                     ),
                   ),
                 ],
