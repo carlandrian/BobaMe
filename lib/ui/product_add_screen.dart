@@ -38,7 +38,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   String _sweetness;
   String _iceLevel;
   String _topping;
-  int toppingsPrice = 0;
+  double toppingsPrice = 0.0;
   bool orderComplete = false;
 
   List<RadioModel> toppingsRadioList = List<RadioModel>();
@@ -47,7 +47,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   @override
   void initState() {
     super.initState();
-    print("getToppings()");
+    //print("getToppings()");
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
@@ -340,13 +340,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     bobaOrder.milkTypeName = _milkType;
                     bobaOrder.sweetnessLevelName = _sweetness;
                     bobaOrder.iceLevelName = _iceLevel;
-                    bobaOrder.toppingsName = _topping;
+                    bobaOrder.toppingsName = _topping == null ? "" : _topping;
+                    bobaOrder.orderCount = 1;
+                    bobaOrder.price = bobaPrice + toppingsPrice;
 
-
-                    bobaCart.addOrderToList(bobaOrder);
                     bobaCart.addOrderToMap(bobaOrder);
-                    print("order count in Cart Map: ${bobaCart.orderCountMap}");
-                    print("${bobaCart.bobaOrders[0].milkTypeName}");
+//                    print("order count in Cart Map: ${bobaCart.orderCountMap}");
                     Navigator.pop(context);
                   },
                   child: Text(

@@ -9,11 +9,26 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  ScrollController _scrollController;
+  bool _nextButtonEnabled = false;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if(_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+      !_scrollController.position.outOfRange) {
+        setState(() {
+          _nextButtonEnabled = true;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var bobaCart = Provider.of<BobaCartModel>(context);
-    print("bobaCart orderCountMap: ${bobaCart.orderCountMap}");
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +44,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       ),
       body: ListView.builder(
-          itemCount: bobaCart.bobaOrders.length,
+          controller: _scrollController,
+          itemCount: bobaCart.bobaOrdersMap.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 18.0),
@@ -37,20 +53,65 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: <Widget>[
                   BobaOrder(bobaCart: bobaCart, index: index,),
                   // add line widget
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15.0),
-                    child: Container(
-                      color: Colors.white12,
-                      child: SizedBox(
-                        height: 2,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ),
-                  )
+//                  Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+//                    child: Container(
+//                      color: Colors.white12,
+//                      child: SizedBox(
+//                        height: 2,
+//                        width: MediaQuery.of(context).size.width,
+//                      ),
+//                    ),
+//                  )
                 ],
               ),
             );
-          })
+          }),
+      bottomNavigationBar: Container(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                child: Text(
+                  " Cancel ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19
+                  ),
+                ),
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                onPressed: () {
+
+                },
+              ),
+              SizedBox(
+                width: 40,
+              ),
+              RaisedButton(
+                child: Text(
+                  "   Next  ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19
+                  ),
+                ),
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                onPressed: _nextButtonEnabled ? () {
+                } : null,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -67,169 +128,248 @@ class BobaOrder extends StatelessWidget {
   final BobaCartModel bobaCart;
   final int index;
 
-  int getOrderCount(){
-    bobaCart.bobaOrders.forEach((element) {
-      print(element.bobaProductName);
-    });
-    return 1;
-  }
-
   @override
   Widget build(BuildContext context) {
+    String key = bobaCart.bobaOrdersMap.keys.elementAt(index);
+    int totalOrderSize = bobaCart.bobaOrdersMap.keys.length;
     return Padding(
       padding: const EdgeInsets.only(left: 18.0),
       child: Container(
         child: Column(
           children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "${bobaCart.bobaOrdersMap[key].bobaProductName.toString().trim().toUpperCase()} MILK TEA",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.white,
+                      wordSpacing: 3,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "${bobaCart.bobaOrdersMap[key].milkTypeName}",
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
+                          ),
+                          Text(
+                            "${bobaCart.bobaOrdersMap[key].sweetnessLevelName}",
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
+                          ),
+                          Text(
+                            "${bobaCart.bobaOrdersMap[key].iceLevelName}",
+                            style: TextStyle(
+                                color: Colors.white30,
+                                fontSize: 15
+                            ),
+                          ),
+                          Text(
+                            bobaCart.bobaOrdersMap[key].toppingsName.toString().isEmpty ? "No Toppings"
+                                : "${bobaCart.bobaOrdersMap[key].toppingsName}",
+                            style: TextStyle(
+                              color: Colors.white30,
+                              fontSize: 15
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 18.0, left: 12),
+                            child: Row(
+                              children: <Widget>[
+                                InkWell(
+                                  child: Text(
+                                    "EDIT",
+                                    style: TextStyle(
+                                      color: Colors.pinkAccent,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                InkWell(
+                                  child: Text(
+                                      "REMOVE",
+                                    style: TextStyle(
+                                        color: Colors.pinkAccent,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    "QTY",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  alignment: Alignment.center,
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "-",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.pinkAccent,
+                                      fontSize: 37
+                                  ),
+                                ),
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    bobaCart.bobaOrdersMap[key].orderCount.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 37
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white30
+                                  ),
+                                ),
+                                Text(
+                                  "+",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.pinkAccent,
+                                      fontSize: 37
+                                  ),
+                                )
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            )
+                          ],
+                        ),
+                    )
+                  ],
+                )
+              ],
+            ),
+            // price details here
             Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "${bobaCart.bobaOrders[index].bobaProductName.toUpperCase()} MILK TEA",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: Colors.white,
-                  wordSpacing: 3,
-                  letterSpacing: 2,
+              child: totalOrderSize-1 == index ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+                    child: Container(
+                      color: Colors.white12,
+                      child: SizedBox(
+                        height: 2,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Subtotal ..............................${bobaCart.subTotal.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white30,
+                      letterSpacing: 2
+                    ),
+                  ),
+                  Text(
+                    "Taxes ..................................${bobaCart.taxes.toStringAsFixed(2)}",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white30,
+                        letterSpacing: 2
+                    ),
+                  ),
+                  Text(
+                    "Delivery Fee .........................${bobaCart.deliveryFee.toStringAsFixed(2)}",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white30,
+                        letterSpacing: 2
+                    ),
+                  ),
+                  Text(
+                    "Order Total ........................... ${bobaCart.orderTotal.toStringAsFixed(2)}",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        letterSpacing: 2
+                    ),
+                  ),
+                ],
+              ) : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Container(
+                  color: Colors.white12,
+                  child: SizedBox(
+                    height: 2,
+                    width: MediaQuery.of(context).size.width,
+                  ),
                 ),
               ),
             ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${bobaCart.bobaOrders[index].milkTypeName}",
-//                                "${bobaCart.bobaOrders[0].sweetnessLevelName} \n"
-//                                "${bobaCart.bobaOrders[0].iceLevelName} \n",
-
-                          style: TextStyle(
-                              color: Colors.white30,
-                              fontSize: 15
-                          ),
-                        ),
-                        Text(
-                          "${bobaCart.bobaOrders[index].sweetnessLevelName}",
-                          style: TextStyle(
-                              color: Colors.white30,
-                              fontSize: 15
-                          ),
-                        ),
-                        Text(
-                          "${bobaCart.bobaOrders[index].iceLevelName}",
-                          style: TextStyle(
-                              color: Colors.white30,
-                              fontSize: 15
-                          ),
-                        ),
-                        Text(
-                          bobaCart.bobaOrders[index].toppingsName == null ? "No Toppings"
-                              : "${bobaCart.bobaOrders[index].toppingsName}",
-                          style: TextStyle(
-                            color: Colors.white30,
-                            fontSize: 15
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0, left: 12),
-                          child: Row(
-                            children: <Widget>[
-                              InkWell(
-                                child: Text(
-                                  "EDIT",
-                                  style: TextStyle(
-                                    color: Colors.pinkAccent,
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              InkWell(
-                                child: Text(
-                                    "REMOVE",
-                                  style: TextStyle(
-                                      color: Colors.pinkAccent,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+//            totalOrderSize-1 == index ? Container(
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                crossAxisAlignment: CrossAxisAlignment.center,
+//                children: <Widget>[
+//                  RaisedButton(
+//                    child: Text(
+//                      "Cancel",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white,
+//                          letterSpacing: 2
+//                      ),
 //                    ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "QTY",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                          ],
-//                            crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "-",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pinkAccent,
-                                  fontSize: 37
-                              ),
-                            ),
-                            Container(
-                              width: 60,
-                              height: 60,
-                              alignment: Alignment.center,
-                              child: Text(
-//                                "${bobaCart.orderCount}",
-                                  getOrderCount().toString(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 37
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white30
-                              ),
-                            ),
-                            Text(
-                              "+",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pinkAccent,
-                                  fontSize: 37
-                              ),
-                            )
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        )
-                      ],
-                    ),
+//                  ),
+//                  RaisedButton(
+//                    child: Text(
+//                      "Next",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white,
+//                          letterSpacing: 2
+//                      ),
 //                    ),
-                )
-              ],
-            )
+//                  )
+//                ],
+//              ),
+//            ) : Container(),
           ],
         ),
       ),

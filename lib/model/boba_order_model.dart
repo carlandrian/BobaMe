@@ -22,6 +22,7 @@ class BobaOrderModel {
 //  String sweetnessLevelId;
   String toppingsId;
   String toppingsName;
+  double price;
   int orderCount;
 
 }
