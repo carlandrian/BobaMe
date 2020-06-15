@@ -73,7 +73,8 @@ class _ProductScreenState extends State<ProductScreen> {
                       },
                     ),
                   );
-              }
+              },
+            physics: BouncingScrollPhysics(),
           );
         },
       ),

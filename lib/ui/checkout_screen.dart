@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+var _bobaCart;
+
 class CheckoutScreen extends StatefulWidget {
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -23,11 +25,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         });
       }
 
-      if(_scrollController.position.atEdge){
-        print("atEdge");
-      }
-
-
       if(!_scrollController.position.haveDimensions){
         setState(() {
           _nextButtonEnabled = true;
@@ -39,7 +36,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var bobaCart = Provider.of<BobaCartModel>(context);
+    _bobaCart = Provider.of<BobaCartModel>(context);
+    //print("_bobaCart.bobaOrdersMap: ${_bobaCart.bobaOrdersMap}");
 
     return Scaffold(
       appBar: AppBar(
@@ -56,13 +54,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
       body: ListView.builder(
         controller: _scrollController,
-        itemCount: bobaCart.bobaOrdersMap.length,
+        itemCount: _bobaCart.bobaOrdersMap.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 18.0),
             child: Column(
               children: <Widget>[
-                BobaOrder(bobaCart: bobaCart, index: index,),
+                BobaOrder(
+                  bobaCart: _bobaCart,
+                  index: index,
+                  removeOrder: () => removeOrder(
+                  _bobaCart.bobaOrdersMap.keys.elementAt(index)
+                  ),
+                ),
                 // add line widget
 //                  Padding(
 //                    padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -118,7 +122,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                onPressed: _nextButtonEnabled || (bobaCart.bobaOrdersMap.length < 3)? () {
+                onPressed: _nextButtonEnabled || (_bobaCart.bobaOrdersMap.length < 3)? () {
                 } : null,
               )
             ],
@@ -127,7 +131,305 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
+
+  removeOrder(String key) {
+    setState(() {
+      _bobaCart.bobaOrdersMap = Map.from(_bobaCart.bobaOrdersMap)..remove(key);
+    });
+  }
 }
+
+//class BobaOrder extends StatefulWidget {
+//  const BobaOrder({Key key, this.index}) : super(key: key);
+//
+//  @override
+//  _BobaOrderState createState() => _BobaOrderState(index: index);
+//
+//  final int index;
+//}
+//
+//class _BobaOrderState extends State<BobaOrder> {
+//  final int index;
+//
+//  _BobaOrderState({this.index});
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    String key = _bobaCart.bobaOrdersMap.keys.elementAt(index);
+//    int totalOrderSize = _bobaCart.bobaOrdersMap.keys.length;
+//    return Padding(
+//      padding: const EdgeInsets.only(left: 18.0),
+//      child: Container(
+//        child: Column(
+//          children: <Widget>[
+//            Column(
+//              children: <Widget>[
+//                Container(
+//                  alignment: Alignment.centerLeft,
+//                  child: Text(
+//                    "${_bobaCart.bobaOrdersMap[key].bobaProductName.toString().trim().toUpperCase()} MILK TEA",
+//                    textAlign: TextAlign.left,
+//                    style: TextStyle(
+//                      fontWeight: FontWeight.bold,
+//                      fontSize: 15,
+//                      color: Colors.white,
+//                      wordSpacing: 3,
+//                      letterSpacing: 2,
+//                    ),
+//                  ),
+//                ),
+//                Row(
+//                  children: <Widget>[
+//                    Flexible(
+//                      flex: 2,
+//                      child: Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        children: <Widget>[
+//                          Padding(
+//                            padding: const EdgeInsets.only(top: 4.0),
+//                            child: Text(
+//                              "${_bobaCart.bobaOrdersMap[key].milkTypeName}",
+//                              style: TextStyle(
+//                                  color: Colors.white30,
+//                                  fontSize: 15
+//                              ),
+//                            ),
+//                          ),
+//                          Padding(
+//                            padding: const EdgeInsets.only(top:4.0),
+//                            child: Text(
+//                              "${_bobaCart.bobaOrdersMap[key].sweetnessLevelName}",
+//                              style: TextStyle(
+//                                  color: Colors.white30,
+//                                  fontSize: 15
+//                              ),
+//                            ),
+//                          ),
+//                          Padding(
+//                            padding: const EdgeInsets.only(top: 4.0),
+//                            child: Text(
+//                              "${_bobaCart.bobaOrdersMap[key].iceLevelName}",
+//                              style: TextStyle(
+//                                  color: Colors.white30,
+//                                  fontSize: 15
+//                              ),
+//                            ),
+//                          ),
+//                          Padding(
+//                            padding: const EdgeInsets.only(top: 4.0),
+//                            child: Text(
+//                              _bobaCart.bobaOrdersMap[key].toppingsName.toString().isEmpty ? "No Toppings"
+//                                  : "${_bobaCart.bobaOrdersMap[key].toppingsName}",
+//                              style: TextStyle(
+//                                  color: Colors.white30,
+//                                  fontSize: 15
+//                              ),
+//                            ),
+//                          ),
+//                          Padding(
+//                            padding: const EdgeInsets.only(top: 18.0, left: 12),
+//                            child: Row(
+//                              children: <Widget>[
+//                                InkWell(
+//                                  child: Text(
+//                                    "EDIT",
+//                                    style: TextStyle(
+//                                        color: Colors.pinkAccent,
+//                                        fontWeight: FontWeight.bold
+//                                    ),
+//                                  ),
+//                                ),
+//                                SizedBox(
+//                                  width: 20,
+//                                ),
+//                                InkWell(
+//                                  child: Text(
+//                                    "REMOVE",
+//                                    style: TextStyle(
+//                                        color: Colors.pinkAccent,
+//                                        fontWeight: FontWeight.bold
+//                                    ),
+//                                  ),
+//                                  onTap: (){
+//                                    setState(() {
+//                                      _bobaCart.removeOrder(key, _bobaCart.bobaOrdersMap[key]);
+//                                    });
+//                                  },
+//                                )
+//                              ],
+//                            ),
+//                          )
+//                        ],
+//                      ),
+//                    ),
+//                    Flexible(
+//                      flex: 1,
+//                      child: Column(
+//                        children: <Widget>[
+//                          Row(
+//                            children: <Widget>[
+//                              Container(
+//                                child: Text(
+//                                  "QTY",
+//                                  style: TextStyle(
+//                                    color: Colors.white,
+//                                    fontSize: 17,
+//                                  ),
+//                                ),
+//                                alignment: Alignment.center,
+//                              ),
+//                            ],
+//                            mainAxisAlignment: MainAxisAlignment.center,
+//                          ),
+//                          Row(
+//                            children: <Widget>[
+//                              Text(
+//                                "-",
+//                                style: TextStyle(
+//                                    fontWeight: FontWeight.bold,
+//                                    color: Colors.pinkAccent,
+//                                    fontSize: 37
+//                                ),
+//                              ),
+//                              Container(
+//                                width: 60,
+//                                height: 60,
+//                                alignment: Alignment.center,
+//                                child: Text(
+//                                  _bobaCart.bobaOrdersMap[key].orderCount.toString(),
+//                                  style: TextStyle(
+//                                      fontWeight: FontWeight.bold,
+//                                      color: Colors.white,
+//                                      fontSize: 37
+//                                  ),
+//                                ),
+//                                decoration: BoxDecoration(
+//                                    color: Colors.white30
+//                                ),
+//                              ),
+//                              Text(
+//                                "+",
+//                                style: TextStyle(
+//                                    fontWeight: FontWeight.bold,
+//                                    color: Colors.pinkAccent,
+//                                    fontSize: 37
+//                                ),
+//                              )
+//                            ],
+//                            mainAxisAlignment: MainAxisAlignment.center,
+//                          )
+//                        ],
+//                      ),
+//                    )
+//                  ],
+//                )
+//              ],
+//            ),
+//            // price details here
+//            Container(
+//              child: totalOrderSize-1 == index ? Column(
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+//                    child: Container(
+//                      color: Colors.white12,
+//                      child: SizedBox(
+//                        height: 2,
+//                        width: MediaQuery.of(context).size.width,
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 4.0),
+//                    child: Text(
+//                      "Subtotal ..............................${_bobaCart.subTotal.toStringAsFixed(2)}",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white30,
+//                          letterSpacing: 2
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 4.0),
+//                    child: Text(
+//                      "Taxes ..................................${_bobaCart.taxes.toStringAsFixed(2)}",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white30,
+//                          letterSpacing: 2
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 4.0),
+//                    child: Text(
+//                      "Delivery Fee .........................${_bobaCart.deliveryFee.toStringAsFixed(2)}",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white30,
+//                          letterSpacing: 2
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 4.0),
+//                    child: Text(
+//                      "Order Total ........................... ${_bobaCart.orderTotal.toStringAsFixed(2)}",
+//                      style: TextStyle(
+//                          fontSize: 16,
+//                          color: Colors.white,
+//                          letterSpacing: 2
+//                      ),
+//                    ),
+//                  ),
+//                ],
+//              ) : Padding(
+//                padding: const EdgeInsets.symmetric(vertical: 15.0),
+//                child: Container(
+//                  color: Colors.white12,
+//                  child: SizedBox(
+//                    height: 2,
+//                    width: MediaQuery.of(context).size.width,
+//                  ),
+//                ),
+//              ),
+//            ),
+////            totalOrderSize-1 == index ? Container(
+////              child: Row(
+////                mainAxisAlignment: MainAxisAlignment.center,
+////                crossAxisAlignment: CrossAxisAlignment.center,
+////                children: <Widget>[
+////                  RaisedButton(
+////                    child: Text(
+////                      "Cancel",
+////                      style: TextStyle(
+////                          fontSize: 16,
+////                          color: Colors.white,
+////                          letterSpacing: 2
+////                      ),
+////                    ),
+////                  ),
+////                  RaisedButton(
+////                    child: Text(
+////                      "Next",
+////                      style: TextStyle(
+////                          fontSize: 16,
+////                          color: Colors.white,
+////                          letterSpacing: 2
+////                      ),
+////                    ),
+////                  )
+////                ],
+////              ),
+////            ) : Container(),
+//          ],
+//        ),
+//      ),
+//    );
+//  }
+//}
 
 
 //BobaOrder(bobaCart: bobaCart),
@@ -135,11 +437,12 @@ class BobaOrder extends StatelessWidget {
   const BobaOrder({
     Key key,
     @required this.bobaCart,
-    @required this.index
+    @required this.index, this.removeOrder
   }) : super(key: key);
 
   final BobaCartModel bobaCart;
   final int index;
+  final VoidCallback removeOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +541,7 @@ class BobaOrder extends StatelessWidget {
                                         fontWeight: FontWeight.bold
                                     ),
                                   ),
+                                  onTap: removeOrder,
                                 )
                               ],
                             ),

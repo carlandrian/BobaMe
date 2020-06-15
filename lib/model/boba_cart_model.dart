@@ -4,12 +4,8 @@ import 'boba_order_model.dart';
 
 class BobaCartModel extends ChangeNotifier {
   final Map _bobaOrderMap = Map<String, dynamic>();
-//  double _taxes = 0.00;
   double _tax = 0.12;
-//  double _subTotal = 0.00;
   double _deliveryFee = 10.0;
-//  double _orderTotal = 0.00;
-
 
   void addOrderToMap(BobaOrderModel order) {
     String key = order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
@@ -27,6 +23,12 @@ class BobaCartModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void removeOrder(String key, dynamic value) {
+    if(_bobaOrderMap.containsKey(key)) {
+      _bobaOrderMap.removeWhere((key, val) => val == value);
+    }
   }
 
   Map<String, dynamic> get bobaOrdersMap => _bobaOrderMap;
