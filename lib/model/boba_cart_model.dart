@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'boba_order_model.dart';
 
 class BobaCartModel extends ChangeNotifier {
-  final Map _bobaOrderMap = Map<String, dynamic>();
+  Map bobaOrderMap = Map<String, dynamic>();
   double _tax = 0.12;
   double _deliveryFee = 10.0;
 
@@ -11,12 +11,12 @@ class BobaCartModel extends ChangeNotifier {
     String key = order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
         + order.iceLevelName + order.toppingsName;
 
-    if(_bobaOrderMap.containsKey(key)) {
-      BobaOrderModel updateOrder = _bobaOrderMap[key];
+    if(bobaOrderMap.containsKey(key)) {
+      BobaOrderModel updateOrder = bobaOrderMap[key];
       updateOrder.orderCount = updateOrder.orderCount + 1;
-      _bobaOrderMap[key] = updateOrder;
+      bobaOrderMap[key] = updateOrder;
     }else{
-      _bobaOrderMap.putIfAbsent(
+      bobaOrderMap.putIfAbsent(
           order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
               + order.iceLevelName + order.toppingsName,
               () => order);
@@ -26,29 +26,34 @@ class BobaCartModel extends ChangeNotifier {
   }
 
   void removeOrder(String key, dynamic value) {
-    if(_bobaOrderMap.containsKey(key)) {
-      _bobaOrderMap.removeWhere((key, val) => val == value);
+    if(bobaOrderMap.containsKey(key)) {
+      bobaOrderMap.removeWhere((key, val) => val == value);
     }
   }
 
-  Map<String, dynamic> get bobaOrdersMap => _bobaOrderMap;
+  Map<String, dynamic> get bobaOrdersMap => bobaOrderMap;
   
   int get orderCount {
     int orderCount = 0;
-    _bobaOrderMap.forEach((key, value) {
-      BobaOrderModel updateOrder = _bobaOrderMap[key];
+    bobaOrderMap.forEach((key, value) {
+      BobaOrderModel updateOrder = bobaOrderMap[key];
       orderCount = orderCount + updateOrder.orderCount;
     });
     return orderCount;
   }
 
-  int get orderCountMap => _bobaOrderMap.length;
+  void setBobaOrderMap(Map<String, dynamic> bobaOrdMap) {
+    bobaOrderMap = bobaOrdMap;
+    notifyListeners();
+  }
+
+  int get orderCountMap => bobaOrderMap.length;
 
   double get taxes {
     double ordTotal = 0;
     int orderNumber = 0;
-    _bobaOrderMap.forEach((key, value) {
-      BobaOrderModel updateOrder = _bobaOrderMap[key];
+    bobaOrderMap.forEach((key, value) {
+      BobaOrderModel updateOrder = bobaOrderMap[key];
       orderNumber = updateOrder.orderCount;
       ordTotal += (updateOrder.price*orderNumber);
     });
@@ -59,8 +64,8 @@ class BobaCartModel extends ChangeNotifier {
   double get subTotal {
     double ordTotal = 0;
     int orderNumber = 0;
-    _bobaOrderMap.forEach((key, value) {
-      BobaOrderModel updateOrder = _bobaOrderMap[key];
+    bobaOrderMap.forEach((key, value) {
+      BobaOrderModel updateOrder = bobaOrderMap[key];
       orderNumber = updateOrder.orderCount;
       ordTotal += (updateOrder.price*orderNumber);
     });
@@ -72,8 +77,8 @@ class BobaCartModel extends ChangeNotifier {
   double get orderTotal {
     double ordTotal = 0;
     int orderNumber = 0;
-    _bobaOrderMap.forEach((key, value) {
-      BobaOrderModel updateOrder = _bobaOrderMap[key];
+    bobaOrderMap.forEach((key, value) {
+      BobaOrderModel updateOrder = bobaOrderMap[key];
       orderNumber = updateOrder.orderCount;
       ordTotal += (updateOrder.price*orderNumber);
     });
