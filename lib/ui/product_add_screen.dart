@@ -12,22 +12,37 @@ import 'custom_widgets/custom_widgets.dart';
 class ProductAddScreen extends StatefulWidget {
   static const id = "ProductAddScreen";
   final String bobaProductName;
-  final int bobaProductPrice;
+  final double bobaProductPrice;
+  final bool editOrder;
+  final String editMilkType;
+  final String editSweetnessLevel;
+  final String editIceLevel;
+  final String editToppings;
 
-  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice}) : super(key: key);
+  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.editMilkType, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.editOrder}) : super(key: key);
 
   @override
   _ProductAddScreenState createState() => _ProductAddScreenState(
       bobaName: bobaProductName,
       bobaPrice: bobaProductPrice,
+      editOrder: editOrder,
+      editMilkType: editMilkType,
+      editSweetnessLevel: editSweetnessLevel,
+      editIceLevel: editIceLevel,
+      editToppings: editToppings,
   );
 }
 
 class _ProductAddScreenState extends State<ProductAddScreen> {
   final String bobaName;
-  final int bobaPrice;
+  final double bobaPrice;
+  final bool editOrder;
+  final String editMilkType;
+  final String editSweetnessLevel;
+  final String editIceLevel;
+  final String editToppings;
 
-  _ProductAddScreenState({this.bobaName, this.bobaPrice});
+  _ProductAddScreenState({this.editOrder, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.bobaName, this.bobaPrice,this.editMilkType});
   FirebaseAuth _auth = FirebaseAuth.instance;
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
@@ -103,7 +118,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      value: _milkType,
+                      value: editMilkType==null ? _milkType : editMilkType,
                       items: snapshot.data.documents.map((map) {
                         return DropdownMenuItem<String>(
                           value: map['name'].toString(),
@@ -150,7 +165,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      value: _sweetness,
+                      value: editSweetnessLevel == null ? _sweetness : editSweetnessLevel,
                       items: snapshot.data.documents.map((map) {
                         return DropdownMenuItem<String>(
                           value: map['name'].toString(),
@@ -199,7 +214,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        value: _iceLevel,
+                        value: editIceLevel == null ? _iceLevel : editIceLevel,
                         items: snapshot.data.documents.map((map) {
                           return DropdownMenuItem<String>(
                             value: map['name'].toString(),
@@ -333,9 +348,18 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
               Padding(
                 padding: const EdgeInsets.only(top: 48.0),
-                child: orderComplete ? RaisedButton(
+                child: editOrder ?  (
+                  RaisedButton(
+                    child: Text(
+                      "Save"
+                    ),
+                    onPressed: (){
+                      // TODO: implement the save action here on the order
+                    },
+                  )
+                ):
+                  (orderComplete ? RaisedButton(
                   onPressed: () {
-                    // Todo: Rewrite this, put the values in a constructor of BobaOrderModel
                     bobaOrder.bobaProductName = bobaName;
                     bobaOrder.milkTypeName = _milkType;
                     bobaOrder.sweetnessLevelName = _sweetness;
@@ -371,6 +395,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
+                )
                 ),
               )
             ],

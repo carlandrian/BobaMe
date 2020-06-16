@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  BobaTextfield(inputController: emailInputController, textFieldLabel: "EMAIL",),
+                  BobaTextfield(inputController: emailInputController, textFieldLabel: "EMAIL", enabled: true,),
                   TextField(
                     controller: passwordInputController,
                     decoration: InputDecoration(

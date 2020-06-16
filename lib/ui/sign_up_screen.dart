@@ -46,9 +46,9 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  BobaTextfield(inputController: firstNameInputController, textFieldLabel: "FIRST NAME",),
-                  BobaTextfield(inputController: lastNameInputController, textFieldLabel: "LAST NAME",),
-                  BobaTextfield(inputController: emailInputController, textFieldLabel: "EMAIL",),
+                  BobaTextfield(inputController: firstNameInputController, textFieldLabel: "FIRST NAME",enabled: true,),
+                  BobaTextfield(inputController: lastNameInputController, textFieldLabel: "LAST NAME",enabled: true,),
+                  BobaTextfield(inputController: emailInputController, textFieldLabel: "EMAIL",enabled: true,),
                   TextField(
                     controller: passwordInputController,
                     decoration: InputDecoration(

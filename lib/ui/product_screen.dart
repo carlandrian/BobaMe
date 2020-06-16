@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/rendering.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'custom_widgets/custom_widgets.dart';
 
@@ -290,11 +291,24 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                   ),
                 ),
                 onTap: () {
-                  print("Add ${firebaseDocument['name'].toString()} to cart");
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ProductAddScreen(
-                        bobaProductName: firebaseDocument['name'].toString(),
-                        bobaProductPrice: firebaseDocument['price']
+//                    Navigator.push(context, MaterialPageRoute(
+//                      builder: (context) => ProductAddScreen(
+//                        bobaProductName: firebaseDocument['name'].toString(),
+//                        bobaProductPrice: firebaseDocument['price'] * 1.0
+//                      ),
+//                    ));
+
+                    Navigator.push(context, PageTransition(
+                      type: PageTransitionType.rightToLeft,
+//                      duration: Duration(seconds: 1),
+                      child: ProductAddScreen(
+                          bobaProductName: firebaseDocument['name'].toString(),
+                          bobaProductPrice: firebaseDocument['price'] * 1.0,
+                          editOrder: false,
+                          editMilkType: null,
+                          editSweetnessLevel: null,
+                          editIceLevel: null,
+                          editToppings: null,
                       ),
                     ));
                 },

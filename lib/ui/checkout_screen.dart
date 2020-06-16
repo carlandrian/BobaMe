@@ -1,4 +1,5 @@
 import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -246,6 +247,19 @@ class BobaOrder extends StatelessWidget {
                                       fontWeight: FontWeight.bold
                                     ),
                                   ),
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => ProductAddScreen(
+                                        bobaProductName: bobaOrdersMap[key].bobaProductName,
+                                        bobaProductPrice: bobaOrdersMap[key].price,
+                                        editOrder: true,
+                                        editMilkType: bobaOrdersMap[key].milkTypeName,
+                                        editSweetnessLevel: bobaOrdersMap[key].sweetnessLevelName,
+                                        editIceLevel: bobaOrdersMap[key].iceLevelName,
+                                        editToppings: bobaOrdersMap[key].toppingsName,
+                                      ),
+                                    ));
+                                  },
                                 ),
                                 SizedBox(
                                   width: 20,
