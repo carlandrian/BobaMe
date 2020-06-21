@@ -1,5 +1,4 @@
 import 'package:boba_me/model/boba_cart_model.dart';
-import 'package:boba_me/model/boba_order_model.dart';
 import 'package:boba_me/ui/checkout_screen.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -139,6 +138,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 // if uid from the firebase authentication is equal to CustomerInfo uid, then this is the user.
                 if(currentUser.uid == element.data['uid']) {
                   debugPrint("email : ${element.data['email']}");
+
                 }
               }));
     } else {}
@@ -151,52 +151,6 @@ class _ProductScreenState extends State<ProductScreen> {
     print("user has signed-out");
   }
 }
-
-//class ShoppingCartWithCount extends StatefulWidget {
-//  final int count;
-//  ShoppingCartWithCount({this.count});
-//  @override
-//  _ShoppingCartWithCountState createState() => _ShoppingCartWithCountState();
-//}
-//
-//class _ShoppingCartWithCountState extends State<ShoppingCartWithCount> {
-//  final int count;
-//  int counter;
-//  _ShoppingCartWithCountState({this.count});
-//
-//  refresh(){
-//    setState(() {
-//      counter++;
-//    });
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Stack(
-//      alignment: Alignment.topRight,
-//      children: <Widget>[
-//        Image.asset("images/shopping_cart_icon.png"),
-//        Container(
-//          height: 21,
-//          width: 21,
-//          decoration: BoxDecoration(
-//              shape: BoxShape.circle,
-//              color: Colors.pinkAccent
-//          ),
-//          child: Text(
-//            bobaOrder.orderCount.toString(),
-//            textAlign: TextAlign.center,
-//            style: TextStyle(
-//                color: Colors.white,
-//                fontSize: 15,
-//                fontWeight: FontWeight.bold
-//            ),
-//          ),
-//        )
-//      ],
-//    );
-//  }
-//}
 
 class ShoppingCartWithCount extends StatelessWidget {
   final int count;
@@ -332,33 +286,3 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
     ],
   );
 }
-
-//_showAddOrderDialog(BuildContext context) async {
-//  var _dropDownValue = 'Milk';
-//  await showDialog(
-//    context: context,
-//    builder: (context) {
-//      return AlertDialog(
-//        content: DropdownButton(
-//          value: _dropDownValue,
-//          items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
-//            child: Text(e),
-//            value: e,
-//          )).toList(),
-//          onChanged: (value) {
-//            print(value);
-//            _dropDownValue = value;
-//          },
-//        ),
-//        actions: <Widget>[
-//          new RaisedButton(
-//              child: Text("Add"),
-//              onPressed: (){
-//
-//              }
-//          )
-//        ],
-//      );
-//    }
-//  );
-//}

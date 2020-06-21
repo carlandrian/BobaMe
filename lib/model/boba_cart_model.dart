@@ -1,3 +1,4 @@
+import 'package:boba_me/model/boba_customer.dart';
 import 'package:flutter/material.dart';
 
 import 'boba_order_model.dart';
@@ -6,6 +7,11 @@ class BobaCartModel extends ChangeNotifier {
   Map bobaOrderMap = Map<String, dynamic>();
   double _tax = 0.12;
   double _deliveryFee = 10.0;
+  BobaCustomer _bobaCustomer;
+
+  BobaCustomer get bobaCustomer {
+    return _bobaCustomer;
+  }
 
   void addOrderToMap(BobaOrderModel order) {
     String key = order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
