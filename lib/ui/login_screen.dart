@@ -89,8 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       final loginUser = await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text);
                       if(loginUser != null) {
                         print("${loginUser.user.uid} is logged-in");
-                        Navigator.pushNamed(context, ProductScreen.id);
+//                        Navigator.pushNamed(context, ProductScreen.id);
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => ProductScreen(),
+                        ));
                       }else{
+                        // TODO: work on a prompt to show user that username/password is incorrect
                         print("unable to login");
                       }
 //                        await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text)

@@ -1,5 +1,8 @@
 import 'package:boba_me/ui/custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:boba_me/model/boba_customer.dart';
+import 'package:boba_me/ui/payment_screen.dart';
+
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -7,17 +10,18 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
-  TextEditingController firstNameController;
+  TextEditingController customerNameController;
   TextEditingController addressLine1Controller;
   TextEditingController addressLine2Controller;
   TextEditingController cityTownController;
   TextEditingController provinceController;
   TextEditingController phoneNumberController;
+  BobaCustomer bobaCustomer;
 
   @override
   void initState() {
     super.initState();
-    firstNameController = TextEditingController();
+    customerNameController = TextEditingController();
     addressLine1Controller = TextEditingController();
     addressLine2Controller = TextEditingController();
     cityTownController = TextEditingController();
@@ -50,7 +54,7 @@ class _AddressScreenState extends State<AddressScreen> {
             children: <Widget>[
               BobaTextfield(
                 textFieldLabel: "CUSTOMER NAME",
-                inputController: firstNameController,
+                inputController: customerNameController,
                 enabled: true,
               ),
               BobaTextfield(
@@ -101,6 +105,19 @@ class _AddressScreenState extends State<AddressScreen> {
                   color: Colors.white
                 ),
               ),
+              onPressed: () {
+                BobaCustomer(
+                  customerName: customerNameController.value,
+                  addressLine1: addressLine1Controller.value,
+                  addressLine2: addressLine2Controller.value,
+                  townCity: cityTownController.value,
+                  province: provinceController.value,
+                  phoneNumber: phoneNumberController.value,
+                );
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => PaymentScreen(bobaCustomer: bobaCustomer,),
+                ));
+              },
             )
           ],
         ),

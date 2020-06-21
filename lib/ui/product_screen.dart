@@ -14,15 +14,17 @@ import 'custom_widgets/custom_widgets.dart';
 
 class ProductScreen extends StatefulWidget {
   static const String id = "product_screen";
+
   @override
   _ProductScreenState createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   final _auth = FirebaseAuth.instance;
-  var bobaProductsDb = Firestore.instance.collection('BobaProducts').snapshots();
-//  var _orderCount = 0;
-
+  var bobaProductsDb =
+      Firestore.instance.collection('BobaProducts').snapshots();
+  var customerInfoDb =
+      Firestore.instance.collection('CustomerInfo').snapshots();
 
   @override
   void initState() {
@@ -45,36 +47,39 @@ class _ProductScreenState extends State<ProductScreen> {
       body: StreamBuilder(
         stream: bobaProductsDb,
         builder: (context, snapshots) {
-          if(!snapshots.hasData) return CircularProgressIndicator();
+          if (!snapshots.hasData) return CircularProgressIndicator();
 
           return ListView.builder(
-              itemCount: snapshots.data.documents.length,
-              itemBuilder: (context, int index) {
-                  return Container(
-                    child: FutureBuilder(
-                      future: _getProducts(context, snapshots.data.documents[index]),//_getFirebaseImage(snapshots.data.documents[index]['imageId']),
-                      builder: (context, snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height / 1.85,
-                            width: MediaQuery.of(context).size.width,
-                            child: snapshot.data,
-                          );
-                        }
+            itemCount: snapshots.data.documents.length,
+            itemBuilder: (context, int index) {
+              return Container(
+                child: FutureBuilder(
+                  future:
+                      _getProducts(context, snapshots.data.documents[index]),
+                  //_getFirebaseImage(snapshots.data.documents[index]['imageId']),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height / 1.85,
+                        width: MediaQuery.of(context).size.width,
+                        child: snapshot.data,
+                      );
+                    }
 
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height / 1.85,
-                            width: MediaQuery.of(context).size.width,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  );
-              },
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height / 1.85,
+                        width: MediaQuery.of(context).size.width,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              );
+            },
             physics: BouncingScrollPhysics(),
           );
         },
@@ -88,26 +93,30 @@ class _ProductScreenState extends State<ProductScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               InkWell(
-                  child: Image.asset("images/boba_profile_icon.png"),
-                  onTap: () {
-                    print('profile clicked');
-                  },
+                child: Image.asset("images/boba_profile_icon.png"),
+                onTap: () {
+                  print('profile clicked');
+                },
               ),
               InkWell(
-                  child: Image.asset("images/boba_drink_icon.png"),
-                  onTap: () {
-                    print('shop clicked');
-                  },
+                child: Image.asset("images/boba_drink_icon.png"),
+                onTap: () {
+                  print('shop clicked');
+                },
               ),
               InkWell(
-                  child: bobaCartModel.orderCount > 0 ? ShoppingCartWithCount(count: bobaCartModel.orderCount) : Image.asset("images/shopping_cart_icon.png"),
-                  onTap: () {
-                    if(bobaCartModel.orderCount > 0) {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CheckoutScreen(),
-                      ));
-                    }
-                  },
+                child: bobaCartModel.orderCount > 0
+                    ? ShoppingCartWithCount(count: bobaCartModel.orderCount)
+                    : Image.asset("images/shopping_cart_icon.png"),
+                onTap: () {
+                  if (bobaCartModel.orderCount > 0) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CheckoutScreen(),
+                        ));
+                  }
+                },
               ),
             ],
           ),
@@ -118,12 +127,21 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void isCurrentUserLoggedIn() async {
     final currentUser = await _auth.currentUser();
-    if(currentUser != null) {
+    if (currentUser != null) {
       print("${currentUser.uid} is logged in");
-//      bobaOrder.customerInfoId = currentUser.uid;
-    }else{
-
-    }
+      // Use the currentUser.uid to get the CustomerInfo details.
+      Firestore.instance
+          // Get collection of CustomerInfo from Firebase
+          .collection('CustomerInfo')
+          .getDocuments()
+          // Iterate each document from the collection
+          .then((value) => value.documents.forEach((element) {
+                // if uid from the firebase authentication is equal to CustomerInfo uid, then this is the user.
+                if(currentUser.uid == element.data['uid']) {
+                  debugPrint("email : ${element.data['email']}");
+                }
+              }));
+    } else {}
   }
 
   @override
@@ -182,14 +200,14 @@ class _ProductScreenState extends State<ProductScreen> {
 
 class ShoppingCartWithCount extends StatelessWidget {
   final int count;
+
   const ShoppingCartWithCount({
-    Key key, this.count,
+    Key key,
+    this.count,
   }) : super(key: key);
 
-  refresh(){
-    setState(){
-
-    }
+  refresh() {
+    setState() {}
   }
 
   @override
@@ -197,24 +215,19 @@ class ShoppingCartWithCount extends StatelessWidget {
     return Stack(
       alignment: Alignment.topRight,
       children: <Widget>[
-          Image.asset("images/shopping_cart_icon.png"),
-          Container(
-            height: 21,
-            width: 21,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.pinkAccent
-            ),
-            child: Text(
-                count.toString(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold
-                ),
-            ),
-          )
+        Image.asset("images/shopping_cart_icon.png"),
+        Container(
+          height: 21,
+          width: 21,
+          decoration:
+              BoxDecoration(shape: BoxShape.circle, color: Colors.pinkAccent),
+          child: Text(
+            count.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+        )
       ],
     );
   }
@@ -222,21 +235,26 @@ class ShoppingCartWithCount extends StatelessWidget {
 
 Future<Widget> _getFirebaseImage(url) async {
   Image m;
-  await FirebaseStorage.instance.ref().child(url).getDownloadURL().then((value) => {
-    m = Image.network(
-      value.toString()
-    )
-  });
+  await FirebaseStorage.instance
+      .ref()
+      .child(url)
+      .getDownloadURL()
+      .then((value) => {m = Image.network(value.toString())});
 
   return m;
 }
 
+Future<Widget> _getCustomerInfo(context, email) async {
+//  await FirebaseStorage.instance.ref()
+}
+
 Future<Widget> _getProducts(context, firebaseDocument) async {
   Image productImage;
-  await FirebaseStorage.instance.ref().child(firebaseDocument['imageId']).getDownloadURL()
-  .then((value) => {
-    productImage = Image.network(value.toString())
-  });
+  await FirebaseStorage.instance
+      .ref()
+      .child(firebaseDocument['imageId'])
+      .getDownloadURL()
+      .then((value) => {productImage = Image.network(value.toString())});
 
   // put the image and its name, text and price in a stack
   return Stack(
@@ -257,10 +275,10 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
               Text(
                 firebaseDocument['name'].toString(),
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
+                  color: Colors.black,
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
                 ),
                 textAlign: TextAlign.right,
                 textDirection: TextDirection.ltr,
@@ -269,48 +287,42 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
                 width: MediaQuery.of(context).size.height / 6.5,
                 child: Text(
                   "${firebaseDocument['description'].toString()}\n\n"
-                      "Php ${double.parse(firebaseDocument['price'].toString()).toStringAsFixed(2)}",
+                  "Php ${double.parse(firebaseDocument['price'].toString()).toStringAsFixed(2)}",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.right,
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height/12.5,
+                height: MediaQuery.of(context).size.height / 12.5,
               ),
               InkWell(
                 child: Text(
                   "ADD",
                   style: TextStyle(
-                    color: Colors.pinkAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 29
-                  ),
+                      color: Colors.pinkAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 29),
                 ),
                 onTap: () {
-//                    Navigator.push(context, MaterialPageRoute(
-//                      builder: (context) => ProductAddScreen(
-//                        bobaProductName: firebaseDocument['name'].toString(),
-//                        bobaProductPrice: firebaseDocument['price'] * 1.0
-//                      ),
-//                    ));
-
-                    Navigator.push(context, PageTransition(
+                  Navigator.push(
+                    context,
+                    PageTransition(
                       type: PageTransitionType.rightToLeft,
-//                      duration: Duration(seconds: 1),
                       child: ProductAddScreen(
-                          bobaProductName: firebaseDocument['name'].toString(),
-                          bobaProductPrice: firebaseDocument['price'] * 1.0,
-                          editOrder: false,
-                          editMilkType: null,
-                          editSweetnessLevel: null,
-                          editIceLevel: null,
-                          editToppings: null,
+                        bobaProductName: firebaseDocument['name'].toString(),
+                        bobaProductPrice: firebaseDocument['price'] * 1.0,
+                        editOrder: false,
+                        editMilkType: null,
+                        editSweetnessLevel: null,
+                        editIceLevel: null,
+                        editToppings: null,
                       ),
-                    ));
+                    ),
+                  );
                 },
               )
             ],
@@ -321,32 +333,32 @@ Future<Widget> _getProducts(context, firebaseDocument) async {
   );
 }
 
-_showAddOrderDialog(BuildContext context) async {
-  var _dropDownValue = 'Milk';
-  await showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        content: DropdownButton(
-          value: _dropDownValue,
-          items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
-            child: Text(e),
-            value: e,
-          )).toList(),
-          onChanged: (value) {
-            print(value);
-            _dropDownValue = value;
-          },
-        ),
-        actions: <Widget>[
-          new RaisedButton(
-              child: Text("Add"),
-              onPressed: (){
-
-              }
-          )
-        ],
-      );
-    }
-  );
-}
+//_showAddOrderDialog(BuildContext context) async {
+//  var _dropDownValue = 'Milk';
+//  await showDialog(
+//    context: context,
+//    builder: (context) {
+//      return AlertDialog(
+//        content: DropdownButton(
+//          value: _dropDownValue,
+//          items: ['Milk', 'Soya', 'Fresh'].map((e) => DropdownMenuItem(
+//            child: Text(e),
+//            value: e,
+//          )).toList(),
+//          onChanged: (value) {
+//            print(value);
+//            _dropDownValue = value;
+//          },
+//        ),
+//        actions: <Widget>[
+//          new RaisedButton(
+//              child: Text("Add"),
+//              onPressed: (){
+//
+//              }
+//          )
+//        ],
+//      );
+//    }
+//  );
+//}
