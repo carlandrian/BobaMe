@@ -78,7 +78,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
             Text(
-              _bobaCustomer.addressLine1 + " " +_bobaCustomer.addressLine2,
+              _bobaCustomer.addressLine1,
+              style: TextStyle(
+                color: Colors.white30,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              _bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
@@ -180,7 +187,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             children: <Widget>[
               RaisedButton(
                 child: Text(
-                  " Cancel ",
+                  " CANCEL ",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 19
@@ -199,7 +206,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
               RaisedButton(
                 child: Text(
-                  "   Next  ",
+                  "   PAY  ",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 19

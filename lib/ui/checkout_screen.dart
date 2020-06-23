@@ -97,7 +97,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             children: <Widget>[
               RaisedButton(
                 child: Text(
-                  " Cancel ",
+                  " CANCEL ",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 19
@@ -116,7 +116,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               RaisedButton(
                 child: Text(
-                  "   Next  ",
+                  "   NEXT  ",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 19
