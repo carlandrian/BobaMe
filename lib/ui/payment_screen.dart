@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import 'custom_widgets/custom_widgets.dart';
+
 BobaCustomer _bobaCustomer;
 BobaCartModel _bobaCart;
 
@@ -14,12 +16,20 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _auth = FirebaseAuth.instance;
+  TextEditingController nameOnCardController;
+  TextEditingController cardNumberController;
+  TextEditingController expirationDateController;
+  TextEditingController cvvController;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    nameOnCardController = TextEditingController();
+    cardNumberController = TextEditingController();
+    expirationDateController = TextEditingController();
+    cvvController = TextEditingController();
   }
 
   @override
@@ -47,14 +57,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
             Text(
               "DELIVER TO:",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
             ),
             SizedBox(
@@ -64,24 +74,98 @@ class _PaymentScreenState extends State<PaymentScreen> {
               _bobaCustomer.deliverTo.toString(),
               style: TextStyle(
                 color: Colors.white30,
+                fontSize: 15,
               ),
             ),
             Text(
               _bobaCustomer.addressLine1 + " " +_bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
+                fontSize: 15,
               ),
             ),
             Text(
               _bobaCustomer.townCity + " " + _bobaCustomer.province,
               style: TextStyle(
                 color: Colors.white30,
+                fontSize: 15,
               ),
             ),
             Text(
               _bobaCustomer.phoneNumber,
               style: TextStyle(
                 color: Colors.white30,
+                fontSize: 15,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 25.0, bottom: 15),
+              child: Container(
+                color: Colors.white12,
+                child: SizedBox(
+                  height: 2,
+                  width: MediaQuery.of(context).size.width,
+                ),
+              ),
+            ),
+            BobaTextfield(
+              textFieldLabel: "NAME ON CARD",
+              inputController: nameOnCardController,
+              enabled: true,
+              fontSize: 19,
+            ),
+            BobaTextfield(
+              textFieldLabel: "CARD NUMBER",
+              inputController: nameOnCardController,
+              enabled: true,
+              fontSize: 19,
+            ),
+            Row(
+              children: <Widget>[
+                Flexible(
+                  child: BobaTextfield(
+                    textFieldLabel: "EXPIRATION DATE",
+                    inputController: nameOnCardController,
+                    enabled: true,
+                    fontSize: 19,
+                  ),
+                  flex: 3,
+                ),
+                Flexible(
+                  child: BobaTextfield(
+                    textFieldLabel: "CVV",
+                    inputController: nameOnCardController,
+                    enabled: true,
+                    fontSize: 19,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 90,
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "ORDER TOTAL:",
+                    style: TextStyle(
+                      color: Colors.white,
+//                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    "PHP ${_bobaCart.orderTotal}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 19,
+                    ),
+                  ),
+                ],
               ),
             )
           ],

@@ -66,7 +66,7 @@ class _AddressScreenState extends State<AddressScreen> {
               BobaTextfield(
                 textFieldLabel: "CUSTOMER NAME",
                 inputController: _getCustomerName(_bobaCart.bobaCustomerInfo),
-                enabled: true,
+                enabled: false,
               ),
               BobaTextfield(
                 textFieldLabel: "DELIVER TO",

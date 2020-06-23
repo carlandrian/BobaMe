@@ -105,9 +105,10 @@ class BobaTextfield extends StatelessWidget {
   final TextEditingController inputController;
   final String textFieldLabel;
   final bool enabled;
+  final double fontSize;
   const BobaTextfield({
     Key key,
-    @required this.inputController, @required this.textFieldLabel, this.enabled,
+    @required this.inputController, @required this.textFieldLabel, this.enabled, this.fontSize,
   }) : super(key: key);
 
 
@@ -121,10 +122,11 @@ class BobaTextfield extends StatelessWidget {
           labelText: textFieldLabel,
           labelStyle: TextStyle(
             color: Colors.white30,
-          )
+          ),
       ),
       style: TextStyle(
         color: Colors.white,
+        fontSize: fontSize,
       ),
       enabled: enabled,
     );
