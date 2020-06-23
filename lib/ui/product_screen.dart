@@ -42,7 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.pinkAccent),
         backgroundColor: Colors.black,
         centerTitle: true,
         title: BobaBannerImage(),

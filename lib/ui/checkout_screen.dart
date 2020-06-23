@@ -47,7 +47,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.pinkAccent),
         title: Text(
           "CHECKOUT",
           style: TextStyle(
