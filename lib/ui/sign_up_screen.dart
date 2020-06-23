@@ -117,8 +117,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       }
                     }catch(e) {
                       print(e);
+                      // TODO: show this error in Login Screen or Alert Dialog
                     }
                   },
+                  // TODO: Enable SUBMIT button only when mandatory fields are provided by user
                   child: Text(
                     "SUBMIT",
                     style: TextStyle(

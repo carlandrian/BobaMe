@@ -63,7 +63,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   @override
   void initState() {
     super.initState();
-    //print("getToppings()");
+    // Hardcoded the Toppings list. Unable to implement coming from Firebase Database.
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
@@ -98,7 +98,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         child: Padding(
           padding: const EdgeInsets.only(top: 28.0),
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
@@ -122,9 +121,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       iconSize: 40,
                       iconEnabledColor: Colors.pinkAccent,
                       focusColor: Colors.white,
-//                      selectedItemBuilder: (context) {
-//                        return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
-//                      },
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -150,8 +146,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          // TODO: Delete this print statement
-                          //print("MilkType: ${value}");
                           _milkType = value;
                           if(_iceLevel != null && _sweetness != null) {
                             orderComplete = true;
@@ -171,9 +165,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       iconSize: 40,
                       iconEnabledColor: Colors.pinkAccent,
                       focusColor: Colors.white,
-//                        selectedItemBuilder: (context) {
-//                          return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
-//                        },
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -220,9 +211,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         iconSize: 40,
                         iconEnabledColor: Colors.pinkAccent,
                         focusColor: Colors.white,
-//                        selectedItemBuilder: (context) {
-//                          return snapshot.data.documents.map((map) => Text(map['name'].toString())).toList();
-//                        },
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -390,7 +378,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     bobaOrder.price = bobaPrice + toppingsPrice;
 
                     bobaCart.addOrderToMap(bobaOrder);
-//                    print("order count in Cart Map: ${bobaCart.orderCountMap}");
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -479,7 +466,6 @@ class CustomRadioItem extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: _radioModel.isSelected ? Colors.pinkAccent : Colors.black,
-//                  color: Colors.pinkAccent,
                   border: Border.all(
                     color: Colors.pinkAccent,
                     width: 2,

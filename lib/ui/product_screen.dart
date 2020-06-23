@@ -141,12 +141,10 @@ class _ProductScreenState extends State<ProductScreen> {
           .then((value) => value.documents.forEach((element) {
                 // if uid from the firebase authentication is equal to CustomerInfo uid, then this is the user.
                 if(currentUser.uid == element.data['uid']) {
-//                  debugPrint("firstname : ${element.data['first_name']}");
                   bobaCustomer.email = element.data['email'];
                   bobaCustomer.uid = element.data['uid'];
                   bobaCustomer.firstName = element.data['first_name'];
                   bobaCustomer.lastName = element.data['last_name'];
-
                   bobaCartModel.assignBobaCustomer(bobaCustomer);
                 }
               }));

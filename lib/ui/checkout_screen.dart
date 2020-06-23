@@ -71,6 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       _bobaOrdersMap.keys.elementAt(index)
                   ),
                 ),
+                // TODO: decide if to delete below commented out codes.
                 // add line widget
 //                  Padding(
 //                    padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -149,7 +150,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 }
 
-//BobaOrder(bobaCart: bobaCart),
 class BobaOrder extends StatelessWidget {
   const BobaOrder({
     Key key,
@@ -414,34 +414,6 @@ class BobaOrder extends StatelessWidget {
                 ),
               ),
             ),
-//            totalOrderSize-1 == index ? Container(
-//              child: Row(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                crossAxisAlignment: CrossAxisAlignment.center,
-//                children: <Widget>[
-//                  RaisedButton(
-//                    child: Text(
-//                      "Cancel",
-//                      style: TextStyle(
-//                          fontSize: 16,
-//                          color: Colors.white,
-//                          letterSpacing: 2
-//                      ),
-//                    ),
-//                  ),
-//                  RaisedButton(
-//                    child: Text(
-//                      "Next",
-//                      style: TextStyle(
-//                          fontSize: 16,
-//                          color: Colors.white,
-//                          letterSpacing: 2
-//                      ),
-//                    ),
-//                  )
-//                ],
-//              ),
-//            ) : Container(),
           ],
         ),
       ),

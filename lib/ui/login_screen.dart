@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'custom_widgets/custom_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -89,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       final loginUser = await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text);
                       if(loginUser != null) {
                         print("${loginUser.user.uid} is logged-in");
-//                        Navigator.pushNamed(context, ProductScreen.id);
                         Navigator.push(context, MaterialPageRoute(
                             builder: (context) => ProductScreen(),
                         ));
@@ -97,19 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         // TODO: work on a prompt to show user that username/password is incorrect
                         print("unable to login");
                       }
-//                        await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text)
-//                            .then((value) => () {
-//
-//                              Navigator.pushNamed(context, BobaProgressIndicator.id);
-//                        }).whenComplete(() => (){
-//                            Navigator.pushNamed(context, ProductScreen.id);
-//                        });
                     }catch(e) {
                       print("error is ${e}");
+                      // TODO: show this error in Login Screen or Alert Dialog
                     }
                     setState(() {
                       print("password: ${passwordInputController.text}");
-
                     });
                   },
                   child: Text(
@@ -119,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 19
                     ),
                   ),
-//                    color: Colors.pinkAccent,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

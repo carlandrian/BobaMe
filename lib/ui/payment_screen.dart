@@ -36,9 +36,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     _bobaCart = Provider.of<BobaCartModel>(context);
     _bobaCustomer = _bobaCart.bobaCustomerInfo;
-    print("Customer Name : ${_bobaCustomer.customerName.toString()}");
-    //print("Deliver To : ${_bobaCustomer.deliverTo.toString()}");
-    //print("Town/City : ${_bobaCustomer.townCity.toString()}");
 
     return Scaffold(
       appBar: AppBar(
@@ -160,7 +157,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     "ORDER TOTAL:",
                     style: TextStyle(
                       color: Colors.white,
-//                      fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
                   ),
