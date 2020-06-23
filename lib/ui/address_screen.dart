@@ -1,7 +1,10 @@
+import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/ui/custom_widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:boba_me/model/boba_customer.dart';
 import 'package:boba_me/ui/payment_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 
 class AddressScreen extends StatefulWidget {
@@ -10,18 +13,23 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
+  final _auth = FirebaseAuth.instance;
   TextEditingController customerNameController;
+  TextEditingController deliverToController;
   TextEditingController addressLine1Controller;
   TextEditingController addressLine2Controller;
   TextEditingController cityTownController;
   TextEditingController provinceController;
   TextEditingController phoneNumberController;
+
+  BobaCartModel _bobaCart;
   BobaCustomer bobaCustomer;
 
   @override
   void initState() {
     super.initState();
     customerNameController = TextEditingController();
+    deliverToController = TextEditingController();
     addressLine1Controller = TextEditingController();
     addressLine2Controller = TextEditingController();
     cityTownController = TextEditingController();
@@ -33,12 +41,16 @@ class _AddressScreenState extends State<AddressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _bobaCart = Provider.of<BobaCartModel>(context);
+//    print("firstname: ${_bobaCart.bobaCustomerInfo.firstName}");
+    customerNameController.value = TextEditingValue(text: "${_bobaCart.bobaCustomerInfo.firstName} ${_bobaCart.bobaCustomerInfo.lastName}");
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
         iconTheme: IconThemeData(
-          color: Colors.white
+          color: Colors.pinkAccent
         ),
         title: Text(
           "ADDRESS",
@@ -55,6 +67,11 @@ class _AddressScreenState extends State<AddressScreen> {
               BobaTextfield(
                 textFieldLabel: "CUSTOMER NAME",
                 inputController: customerNameController,
+                enabled: true,
+              ),
+              BobaTextfield(
+                textFieldLabel: "DELIVER TO",
+                inputController: deliverToController,
                 enabled: true,
               ),
               BobaTextfield(
@@ -97,6 +114,9 @@ class _AddressScreenState extends State<AddressScreen> {
                   color: Colors.white
                 ),
               ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             RaisedButton(
               child: Text(
@@ -106,18 +126,23 @@ class _AddressScreenState extends State<AddressScreen> {
                 ),
               ),
               onPressed: () {
-                BobaCustomer(
-                  customerName: customerNameController.value,
-                  addressLine1: addressLine1Controller.value,
-                  addressLine2: addressLine2Controller.value,
-                  townCity: cityTownController.value,
-                  province: provinceController.value,
-                  phoneNumber: phoneNumberController.value,
+                bobaCustomer = BobaCustomer(
+                  customerName: customerNameController.value.text,
+                  deliverTo: deliverToController.value.text,
+                  addressLine1: addressLine1Controller.value.text,
+                  addressLine2: addressLine2Controller.value.text,
+                  townCity: cityTownController.value.text,
+                  province: provinceController.value.text,
+                  phoneNumber: phoneNumberController.value.text,
                 );
+                _bobaCart.assignBobaCustomer(bobaCustomer);
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PaymentScreen(bobaCustomer: bobaCustomer,),
+                  builder: (context) => PaymentScreen(),
                 ));
               },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             )
           ],
         ),

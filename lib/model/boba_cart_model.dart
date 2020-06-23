@@ -9,8 +9,13 @@ class BobaCartModel extends ChangeNotifier {
   double _deliveryFee = 10.0;
   BobaCustomer _bobaCustomer;
 
-  BobaCustomer get bobaCustomer {
+  BobaCustomer get bobaCustomerInfo {
     return _bobaCustomer;
+  }
+
+  void assignBobaCustomer(BobaCustomer bc) {
+    _bobaCustomer = bc;
+    notifyListeners();
   }
 
   void addOrderToMap(BobaOrderModel order) {

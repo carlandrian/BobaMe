@@ -1,4 +1,5 @@
 import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/model/boba_customer.dart';
 import 'package:boba_me/ui/checkout_screen.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,6 +26,9 @@ class _ProductScreenState extends State<ProductScreen> {
   var customerInfoDb =
       Firestore.instance.collection('CustomerInfo').snapshots();
 
+  var bobaCartModel;
+  var bobaCustomer = BobaCustomer();
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +37,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var bobaCartModel = Provider.of<BobaCartModel>(context);
+    bobaCartModel = Provider.of<BobaCartModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -137,8 +141,13 @@ class _ProductScreenState extends State<ProductScreen> {
           .then((value) => value.documents.forEach((element) {
                 // if uid from the firebase authentication is equal to CustomerInfo uid, then this is the user.
                 if(currentUser.uid == element.data['uid']) {
-                  debugPrint("email : ${element.data['email']}");
+//                  debugPrint("firstname : ${element.data['first_name']}");
+                  bobaCustomer.email = element.data['email'];
+                  bobaCustomer.uid = element.data['uid'];
+                  bobaCustomer.firstName = element.data['first_name'];
+                  bobaCustomer.lastName = element.data['last_name'];
 
+                  bobaCartModel.assignBobaCustomer(bobaCustomer);
                 }
               }));
     } else {}
