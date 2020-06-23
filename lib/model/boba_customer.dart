@@ -17,6 +17,6 @@ class BobaCustomer {
 
   BobaCustomer({this.customerName, this.deliverTo, this.addressLine1,
     this.addressLine2, this.townCity, this.province, this.phoneNumber,
-    this.uid, this.firstName, this.lastName
+    this.uid, this.email, this.firstName, this.lastName
   });
 }

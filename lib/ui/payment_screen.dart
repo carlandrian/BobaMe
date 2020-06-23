@@ -27,8 +27,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _bobaCart = Provider.of<BobaCartModel>(context);
     _bobaCustomer = _bobaCart.bobaCustomerInfo;
     print("Customer Name : ${_bobaCustomer.customerName.toString()}");
-    print("Deliver To : ${_bobaCustomer.deliverTo.toString()}");
-    print("Town/City : ${_bobaCustomer.townCity.toString()}");
+    //print("Deliver To : ${_bobaCustomer.deliverTo.toString()}");
+    //print("Town/City : ${_bobaCustomer.townCity.toString()}");
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +73,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
             Text(
-              _bobaCustomer.townCity + _bobaCustomer.province,
+              _bobaCustomer.townCity + " " + _bobaCustomer.province,
               style: TextStyle(
                 color: Colors.white30,
               ),

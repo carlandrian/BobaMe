@@ -42,8 +42,7 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     _bobaCart = Provider.of<BobaCartModel>(context);
-//    print("firstname: ${_bobaCart.bobaCustomerInfo.firstName}");
-    customerNameController.value = TextEditingValue(text: "${_bobaCart.bobaCustomerInfo.firstName} ${_bobaCart.bobaCustomerInfo.lastName}");
+
 
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +65,7 @@ class _AddressScreenState extends State<AddressScreen> {
             children: <Widget>[
               BobaTextfield(
                 textFieldLabel: "CUSTOMER NAME",
-                inputController: customerNameController,
+                inputController: _getCustomerName(_bobaCart.bobaCustomerInfo),
                 enabled: true,
               ),
               BobaTextfield(
@@ -126,16 +125,22 @@ class _AddressScreenState extends State<AddressScreen> {
                 ),
               ),
               onPressed: () {
-                bobaCustomer = BobaCustomer(
-                  customerName: customerNameController.value.text,
-                  deliverTo: deliverToController.value.text,
-                  addressLine1: addressLine1Controller.value.text,
-                  addressLine2: addressLine2Controller.value.text,
-                  townCity: cityTownController.value.text,
-                  province: provinceController.value.text,
-                  phoneNumber: phoneNumberController.value.text,
-                );
-                _bobaCart.assignBobaCustomer(bobaCustomer);
+                setState(() {
+                  bobaCustomer = BobaCustomer(
+                    customerName: customerNameController.value.text,
+                    deliverTo: deliverToController.value.text,
+                    addressLine1: addressLine1Controller.value.text,
+                    addressLine2: addressLine2Controller.value.text,
+                    townCity: cityTownController.value.text,
+                    province: provinceController.value.text,
+                    phoneNumber: phoneNumberController.value.text,
+                    uid: _bobaCart.bobaCustomerInfo.uid,
+                    firstName: _bobaCart.bobaCustomerInfo.firstName,
+                    lastName: _bobaCart.bobaCustomerInfo.lastName,
+                    email: _bobaCart.bobaCustomerInfo.email,
+                  );
+                  _bobaCart.assignBobaCustomer(bobaCustomer);
+                });
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) => PaymentScreen(),
                 ));
@@ -148,5 +153,10 @@ class _AddressScreenState extends State<AddressScreen> {
         ),
       )
     );
+  }
+
+  _getCustomerName(BobaCustomer bobaCustomerInfo) {
+    customerNameController.value = TextEditingValue(text: "${bobaCustomerInfo.firstName} ${bobaCustomerInfo.lastName}");
+    return customerNameController;
   }
 }
