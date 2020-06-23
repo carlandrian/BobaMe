@@ -77,20 +77,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 fontSize: 15,
               ),
             ),
-            Text(
+            _bobaCustomer.addressLine1.isNotEmpty ? Text(
               _bobaCustomer.addressLine1,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
-            ),
-            Text(
+            ) : Container(),
+            _bobaCustomer.addressLine2.isNotEmpty ? Text(
               _bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
-            ),
+            ) : Container(),
             Text(
               _bobaCustomer.townCity + " " + _bobaCustomer.province,
               style: TextStyle(
@@ -217,13 +217,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 onPressed:
-                  //nextButtonEnabled || (_bobaOrdersMap.length < 3)? () {
-                  //Navigator.push(context, MaterialPageRoute(
-                  //  builder: (context) => AddressScreen(),
-                  //));
-                //} : null
                 () {
-
+                  // TODO: Initially set this button to disabled.
+                  // Once Deliver To, Address 1, and Phone Number are populated, then enable this PAY button
                 },
               )
             ],

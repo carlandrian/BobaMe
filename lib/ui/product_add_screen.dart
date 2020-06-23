@@ -19,6 +19,7 @@ class ProductAddScreen extends StatefulWidget {
   final String editIceLevel;
   final String editToppings;
 
+  // TODO: Is constructor necessary here? Maybe we can use BobaCart to edit the order.
   const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.editMilkType, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.editOrder}) : super(key: key);
 
   @override
@@ -66,7 +67,18 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     toppingsRadioList.add(RadioModel(false, "Small Tapioca", "Small Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Large Tapioca", "Large Tapioca"));
     toppingsRadioList.add(RadioModel(false, "Lychee Jelly", "Lychee Jelly"));
-//    print("BobaOrder.orderCount ${bobaOrder.orderCount}");
+
+    if(editMilkType != null) {
+      _milkType = editMilkType;
+    }
+
+    if(editSweetnessLevel != null) {
+      _sweetness = editSweetnessLevel;
+    }
+
+    if(editIceLevel != null) {
+      _iceLevel = editIceLevel;
+    }
   }
 
   @override
@@ -118,7 +130,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      value: editMilkType==null ? _milkType : editMilkType,
+                      value: _milkType,
                       items: snapshot.data.documents.map((map) {
                         return DropdownMenuItem<String>(
                           value: map['name'].toString(),
@@ -138,6 +150,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                       onChanged: (value) {
                         setState(() {
+                          // TODO: Delete this print statement
+                          //print("MilkType: ${value}");
                           _milkType = value;
                           if(_iceLevel != null && _sweetness != null) {
                             orderComplete = true;
@@ -165,7 +179,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      value: editSweetnessLevel == null ? _sweetness : editSweetnessLevel,
+                      value: _sweetness,
                       items: snapshot.data.documents.map((map) {
                         return DropdownMenuItem<String>(
                           value: map['name'].toString(),
@@ -214,7 +228,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        value: editIceLevel == null ? _iceLevel : editIceLevel,
+                        value: _iceLevel,
                         items: snapshot.data.documents.map((map) {
                           return DropdownMenuItem<String>(
                             value: map['name'].toString(),
@@ -351,11 +365,18 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 child: editOrder ?  (
                   RaisedButton(
                     child: Text(
-                      "Save"
+                      "Save",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19
+                      ),
                     ),
                     onPressed: (){
                       // TODO: implement the save action here on the order
                     },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   )
                 ):
                   (orderComplete ? RaisedButton(
