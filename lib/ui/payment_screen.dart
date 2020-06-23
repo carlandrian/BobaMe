@@ -3,7 +3,7 @@ import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
+import 'package:boba_me/ui/product_screen.dart';
 import 'custom_widgets/custom_widgets.dart';
 
 BobaCustomer _bobaCustomer;
@@ -74,14 +74,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 fontSize: 15,
               ),
             ),
-            _bobaCustomer.addressLine1.isNotEmpty ? Text(
+            _bobaCustomer.addressLine1 != null ? Text(
               _bobaCustomer.addressLine1,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
             ) : Container(),
-            _bobaCustomer.addressLine2.isNotEmpty ? Text(
+            _bobaCustomer.addressLine2 != null ? Text(
               _bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
@@ -89,14 +89,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ) : Container(),
             Text(
-              _bobaCustomer.townCity + " " + _bobaCustomer.province,
+              (_bobaCustomer.townCity != null && _bobaCustomer.province != null)
+                  ? _bobaCustomer.townCity + " " + _bobaCustomer.province : "",
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
             ),
             Text(
-              _bobaCustomer.phoneNumber,
+              _bobaCustomer.phoneNumber != null ? _bobaCustomer.phoneNumber : "",
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
@@ -181,6 +182,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              // TODO:
               RaisedButton(
                 child: Text(
                   " CANCEL ",
@@ -193,8 +195,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ProductScreen(),
+                    fullscreenDialog: true,
+                  ),);
                 },
               ),
               SizedBox(
@@ -202,7 +207,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
               RaisedButton(
                 child: Text(
-                  "   PAY  ",
+                  "   PAY   ",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 19

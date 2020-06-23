@@ -142,10 +142,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   removeOrder(String key) {
     setState(() {
-      print("removing with ${key}");
+//      print("removing with ${key}");
       Map<String, dynamic> removedOrder = Map.from(_bobaOrdersMap)..remove(key);
       _bobaCart.setBobaOrderMap(removedOrder);
-      print("${_bobaOrdersMap.length}");
+//      print("${_bobaOrdersMap.length}");
     });
   }
 }

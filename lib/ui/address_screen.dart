@@ -5,6 +5,7 @@ import 'package:boba_me/model/boba_customer.dart';
 import 'package:boba_me/ui/payment_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:boba_me/ui/product_screen.dart';
 
 
 class AddressScreen extends StatefulWidget {
@@ -108,20 +109,30 @@ class _AddressScreenState extends State<AddressScreen> {
           children: <Widget>[
             RaisedButton(
               child: Text(
-                "CANCEL",
+                " CANCEL ",
                 style: TextStyle(
-                  color: Colors.white
+                  color: Colors.white,
+                  fontSize: 19
                 ),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ProductScreen(),
+                ),);
+              },
+            ),
+            SizedBox(
+              width: 40,
             ),
             RaisedButton(
               child: Text(
-                "NEXT",
+                "  NEXT  ",
                 style: TextStyle(
-                  color: Colors.white
+                  color: Colors.white,
+                    fontSize: 19
                 ),
               ),
               onPressed: () {
