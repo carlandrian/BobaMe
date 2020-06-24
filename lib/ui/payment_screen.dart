@@ -24,7 +24,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     nameOnCardController = TextEditingController();
     cardNumberController = TextEditingController();
@@ -121,7 +120,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             BobaTextfield(
               textFieldLabel: "CARD NUMBER",
-              inputController: nameOnCardController,
+              inputController: cardNumberController,
               enabled: true,
               fontSize: 19,
             ),
@@ -130,7 +129,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Flexible(
                   child: BobaTextfield(
                     textFieldLabel: "EXPIRATION DATE",
-                    inputController: nameOnCardController,
+                    inputController: expirationDateController,
                     enabled: true,
                     fontSize: 19,
                   ),
@@ -139,7 +138,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Flexible(
                   child: BobaTextfield(
                     textFieldLabel: "CVV",
-                    inputController: nameOnCardController,
+                    inputController: cvvController,
                     enabled: true,
                     fontSize: 19,
                   ),
@@ -182,7 +181,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              // TODO:
               RaisedButton(
                 child: Text(
                   " CANCEL ",
