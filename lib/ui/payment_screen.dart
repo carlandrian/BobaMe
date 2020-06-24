@@ -196,7 +196,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) => ProductScreen(),
-                    fullscreenDialog: true,
                   ),);
                 },
               ),

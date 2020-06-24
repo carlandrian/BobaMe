@@ -106,9 +106,11 @@ class BobaTextfield extends StatelessWidget {
   final String textFieldLabel;
   final bool enabled;
   final double fontSize;
+  final Function onChanged;
+
   const BobaTextfield({
     Key key,
-    @required this.inputController, @required this.textFieldLabel, this.enabled, this.fontSize,
+    @required this.inputController, @required this.textFieldLabel, this.enabled, this.fontSize, this.onChanged,
   }) : super(key: key);
 
 
@@ -129,6 +131,7 @@ class BobaTextfield extends StatelessWidget {
         fontSize: fontSize,
       ),
       enabled: enabled,
+      onChanged: onChanged,
     );
   }
 }

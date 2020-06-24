@@ -26,6 +26,8 @@ class _AddressScreenState extends State<AddressScreen> {
   BobaCartModel _bobaCart;
   BobaCustomer bobaCustomer;
 
+  bool addressFieldsCompleted = false;
+
   @override
   void initState() {
     super.initState();
@@ -73,11 +75,29 @@ class _AddressScreenState extends State<AddressScreen> {
                 textFieldLabel: "DELIVER TO",
                 inputController: deliverToController,
                 enabled: true,
+                onChanged: (value) {
+                  if(deliverToController.text.length > 0
+                      && addressLine1Controller.text.length > 0
+                      && phoneNumberController.text.length > 0) {
+                    setState(() {
+                      addressFieldsCompleted = true;
+                    });
+                  }
+                },
               ),
               BobaTextfield(
                 textFieldLabel: "ADDRESS LINE 1",
                 inputController: addressLine1Controller,
                 enabled: true,
+                onChanged: (value) {
+                  if(deliverToController.text.length > 0
+                      && addressLine1Controller.text.length > 0
+                      && phoneNumberController.text.length > 0) {
+                    setState(() {
+                      addressFieldsCompleted = true;
+                    });
+                  }
+                },
               ),
               BobaTextfield(
                 textFieldLabel: "ADDRESS LINE 2",
@@ -98,6 +118,15 @@ class _AddressScreenState extends State<AddressScreen> {
                 textFieldLabel: "PHONE NUMBER",
                 inputController: phoneNumberController,
                 enabled: true,
+                onChanged: (value) {
+                  if(deliverToController.text.length > 0
+                      && addressLine1Controller.text.length > 0
+                      && phoneNumberController.text.length > 0) {
+                    setState(() {
+                      addressFieldsCompleted = true;
+                    });
+                  }
+                },
               ),
             ],
         ),
@@ -127,7 +156,7 @@ class _AddressScreenState extends State<AddressScreen> {
             SizedBox(
               width: 40,
             ),
-            RaisedButton(
+            addressFieldsCompleted ? RaisedButton(
               child: Text(
                 "  NEXT  ",
                 style: TextStyle(
@@ -159,7 +188,18 @@ class _AddressScreenState extends State<AddressScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
-            )
+            ) : RaisedButton (
+              child: Text(
+                "  NEXT  ",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ],
         ),
       )
