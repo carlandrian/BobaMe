@@ -93,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             builder: (context) => ProductScreen(),
                         ));
                       }else{
-                        // TODO: work on a prompt to show user that username/password is incorrect
                         print("unable to login");
 
                       }
@@ -104,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) => ErrorAlertDialog(contentText: "Username/Password supplied is incorrect.",),
                       );
                     }
+                    // TODO: Delete this setState()
 //                    setState(() {
 //                      print("password: ${passwordInputController.text}");
 //                    });

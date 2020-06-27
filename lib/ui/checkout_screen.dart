@@ -142,10 +142,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   removeOrder(String key) {
     setState(() {
-//      print("removing with ${key}");
       Map<String, dynamic> removedOrder = Map.from(_bobaOrdersMap)..remove(key);
       _bobaCart.setBobaOrderMap(removedOrder);
-//      print("${_bobaOrdersMap.length}");
     });
   }
 }
@@ -228,7 +226,7 @@ class BobaOrder extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
                               bobaOrdersMap[key].toppingsName.toString().isEmpty ? "No Toppings"
-                                  : "${bobaOrdersMap[key].toppingsName}",
+                                  : "${bobaOrdersMap[key].toppingsName} -- Add'l. Php 10",
                               style: TextStyle(
                                 color: Colors.white30,
                                 fontSize: 15
@@ -250,6 +248,7 @@ class BobaOrder extends StatelessWidget {
                                   onTap: (){
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => ProductAddScreen(
+                                        // TODO: Probably use index and/or keys, passed as parameters to ProductAddScreen, to identify the order to be edited.
                                         bobaProductName: bobaOrdersMap[key].bobaProductName,
                                         bobaProductPrice: bobaOrdersMap[key].price,
                                         editOrder: true,
@@ -257,6 +256,7 @@ class BobaOrder extends StatelessWidget {
                                         editSweetnessLevel: bobaOrdersMap[key].sweetnessLevelName,
                                         editIceLevel: bobaOrdersMap[key].iceLevelName,
                                         editToppings: bobaOrdersMap[key].toppingsName,
+                                        editOrderKey: key,
                                       ),
                                     ));
                                   },

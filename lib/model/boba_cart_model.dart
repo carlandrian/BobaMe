@@ -36,6 +36,14 @@ class BobaCartModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateOrder(BobaOrderModel order, String editOrderKey) {
+
+    if(bobaOrderMap.containsKey(editOrderKey)) {
+      bobaOrderMap.remove(editOrderKey);
+    }
+    addOrderToMap(order);
+  }
+
   void removeOrder(String key, dynamic value) {
     if(bobaOrderMap.containsKey(key)) {
       bobaOrderMap.removeWhere((key, val) => val == value);

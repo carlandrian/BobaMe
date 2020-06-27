@@ -1,5 +1,6 @@
 import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/model/boba_order_model.dart';
+import 'package:boba_me/ui/checkout_screen.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,9 +19,10 @@ class ProductAddScreen extends StatefulWidget {
   final String editSweetnessLevel;
   final String editIceLevel;
   final String editToppings;
+  final String editOrderKey;
 
   // TODO: Is constructor necessary here? Maybe we can use BobaCart to edit the order.
-  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.editMilkType, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.editOrder}) : super(key: key);
+  const ProductAddScreen({Key key, this.bobaProductName, this.bobaProductPrice, this.editMilkType, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.editOrder, this.editOrderKey}) : super(key: key);
 
   @override
   _ProductAddScreenState createState() => _ProductAddScreenState(
@@ -31,6 +33,7 @@ class ProductAddScreen extends StatefulWidget {
       editSweetnessLevel: editSweetnessLevel,
       editIceLevel: editIceLevel,
       editToppings: editToppings,
+      editOrderKey: editOrderKey,
   );
 }
 
@@ -42,8 +45,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   final String editSweetnessLevel;
   final String editIceLevel;
   final String editToppings;
+  final String editOrderKey;
 
-  _ProductAddScreenState({this.editOrder, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.bobaName, this.bobaPrice,this.editMilkType});
+  _ProductAddScreenState({this.editOrder, this.editSweetnessLevel, this.editIceLevel, this.editToppings, this.bobaName, this.bobaPrice,this.editMilkType,this.editOrderKey,});
   FirebaseAuth _auth = FirebaseAuth.instance;
   var iceLevelDb = Firestore.instance.collection('IceLevel').snapshots();
   var milkTypeDb = Firestore.instance.collection('MilkType').snapshots();
@@ -58,7 +62,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   bool orderComplete = false;
 
   List<RadioModel> toppingsRadioList = List<RadioModel>();
-
 
   @override
   void initState() {
@@ -84,8 +87,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   @override
   Widget build(BuildContext context) {
     var bobaCart = Provider.of<BobaCartModel>(context);
-    var bobaOrder = BobaOrderModel();
 
+    print("editOrderKey = $editOrderKey");
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -360,7 +363,19 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                     ),
                     onPressed: (){
-                      // TODO: implement the save action here on the order
+                      BobaOrderModel editOrder = BobaOrderModel();
+                      editOrder.bobaProductName = bobaName;
+                      editOrder.milkTypeName = _milkType;
+                      editOrder.sweetnessLevelName = _sweetness;
+                      editOrder.iceLevelName = _iceLevel;
+                      editOrder.toppingsName = _topping == null ? "" : _topping;
+                      editOrder.orderCount = 1;
+                      editOrder.price = bobaPrice + toppingsPrice;
+
+                      bobaCart.updateOrder(editOrder, editOrderKey);
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CheckoutScreen(),
+                      ));
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -369,6 +384,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 ):
                   (orderComplete ? RaisedButton(
                   onPressed: () {
+                    var bobaOrder = BobaOrderModel();
                     bobaOrder.bobaProductName = bobaName;
                     bobaOrder.milkTypeName = _milkType;
                     bobaOrder.sweetnessLevelName = _sweetness;
