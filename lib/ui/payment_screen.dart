@@ -35,7 +35,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     _bobaCart = Provider.of<BobaCartModel>(context);
     _bobaCustomer = _bobaCart.bobaCustomerInfo;
-
+    debugPrint("Address 2 = ${_bobaCustomer.addressLine2}");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -73,14 +73,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 fontSize: 15,
               ),
             ),
-            _bobaCustomer.addressLine1 != null ? Text(
+           Text(
               _bobaCustomer.addressLine1,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
-            ) : Container(),
-            _bobaCustomer.addressLine2 != null ? Text(
+            ),
+            (_bobaCustomer.addressLine2 != null && _bobaCustomer.addressLine2.isNotEmpty) ? Text(
               _bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
@@ -216,8 +216,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 onPressed:
                 () {
-                  // TODO: Initially set this button to disabled.
-                  // Once Deliver To, Address 1, and Phone Number are populated, then enable this PAY button
+                  //  TODO: Implement Order action.
+                  //  TODO: 1. Show an Alert Dialog to prompt customer to confirm his order.
+                  //  TODO: 2. Navigate to Order Success Screen, once customer has confirmed his order.
                 },
               )
             ],
