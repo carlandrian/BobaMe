@@ -81,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                // TODO: Enable this SUBMIT button only when the fields have been supplied with values
                 RaisedButton(
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   onPressed: () async{
@@ -94,14 +95,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       }else{
                         // TODO: work on a prompt to show user that username/password is incorrect
                         print("unable to login");
+
                       }
                     }catch(e) {
-                      print("error is ${e}");
-                      // TODO: show this error in Login Screen or Alert Dialog
+//                      print("error is ${e}");
+                      showDialog(
+                         context: context,
+                        builder: (context) => ErrorAlertDialog(contentText: "Username/Password supplied is incorrect.",),
+                      );
                     }
-                    setState(() {
-                      print("password: ${passwordInputController.text}");
-                    });
+//                    setState(() {
+//                      print("password: ${passwordInputController.text}");
+//                    });
                   },
                   child: Text(
                     "SUBMIT",

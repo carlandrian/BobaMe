@@ -135,3 +135,31 @@ class BobaTextfield extends StatelessWidget {
     );
   }
 }
+
+class ErrorAlertDialog extends StatelessWidget {
+  final String contentText;
+
+  const ErrorAlertDialog({Key key, this.contentText}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        "BobaMe - Error"
+      ),
+      content: Text(
+        "$contentText"
+      ),
+      actions: <Widget>[
+        RaisedButton(
+          child: Text(
+            "OK"
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+  }
+}
