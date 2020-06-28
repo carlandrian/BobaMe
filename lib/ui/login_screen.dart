@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       final loginUser = await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text);
                       if(loginUser != null) {
                         print("${loginUser.user.uid} is logged-in");
-                        Navigator.push(context, MaterialPageRoute(
+                        Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => ProductScreen(),
                         ));
                       }else{
@@ -100,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
 //                      print("error is ${e}");
                       showDialog(
                          context: context,
-                        builder: (context) => ErrorAlertDialog(contentText: "Username/Password supplied is incorrect.",),
+                        barrierDismissible: false,
+                        builder: (context) => ErrorAlertDialog(contentText: "Uh-oh! Login error. Are you a BobaMe user already?",),
                       );
                     }
                     // TODO: Delete this setState()

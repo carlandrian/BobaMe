@@ -19,18 +19,15 @@ class BobaCartModel extends ChangeNotifier {
   }
 
   void addOrderToMap(BobaOrderModel order) {
-    String key = order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
-        + order.iceLevelName + order.toppingsName;
+    String key = order.bobaProductName + order.milkTypeName.trim() + order.sweetnessLevelName.trim()
+        + order.iceLevelName.trim() + order.toppingsName.trim();
 
     if(bobaOrderMap.containsKey(key)) {
       BobaOrderModel updateOrder = bobaOrderMap[key];
       updateOrder.orderCount = updateOrder.orderCount + 1;
       bobaOrderMap[key] = updateOrder;
     }else{
-      bobaOrderMap.putIfAbsent(
-          order.bobaProductName + order.milkTypeName + order.sweetnessLevelName
-              + order.iceLevelName + order.toppingsName,
-              () => order);
+      bobaOrderMap.putIfAbsent(key, () => order);
     }
 
     notifyListeners();
@@ -48,6 +45,11 @@ class BobaCartModel extends ChangeNotifier {
     if(bobaOrderMap.containsKey(key)) {
       bobaOrderMap.removeWhere((key, val) => val == value);
     }
+  }
+
+  void clearOrders() {
+    bobaOrderMap.clear();
+    notifyListeners();
   }
 
   Map<String, dynamic> get bobaOrdersMap => bobaOrderMap;

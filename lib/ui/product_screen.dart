@@ -42,6 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: Container(),
         iconTheme: IconThemeData(color: Colors.pinkAccent),
         backgroundColor: Colors.black,
         centerTitle: true,

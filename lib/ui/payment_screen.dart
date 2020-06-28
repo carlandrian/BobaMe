@@ -1,5 +1,6 @@
 import 'package:boba_me/model/boba_customer.dart';
 import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/ui/order_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   TextEditingController cardNumberController;
   TextEditingController expirationDateController;
   TextEditingController cvvController;
-
+  bool orderInProgress = false;
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     _bobaCart = Provider.of<BobaCartModel>(context);
     _bobaCustomer = _bobaCart.bobaCustomerInfo;
-    debugPrint("Address 2 = ${_bobaCustomer.addressLine2}");
+//    debugPrint("Address 2 = ${_bobaCustomer.addressLine2}");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -215,10 +216,49 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 onPressed:
-                () {
-                  //  TODO: Implement Order action.
+                ()  {
+
                   //  TODO: 1. Show an Alert Dialog to prompt customer to confirm his order.
-                  //  TODO: 2. Navigate to Order Success Screen, once customer has confirmed his order.
+                  orderInProgress = true;
+                  try {
+                    //  TODO: 2. Implement Order save to Firestore, iterating to Customer's order/s.
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Text(
+                          "Place Order?"
+                        ),
+                       actions: <Widget>[
+                         RaisedButton(
+                           child: Text(
+                             "CANCEL"
+                           ),
+                           onPressed: () {
+                             Navigator.pop(context);
+                           },
+                         ),
+                         SizedBox(
+                           width: 10.0,
+                         ),
+                         RaisedButton(
+                           child: Text(
+                             "YES"
+                           ),
+                           onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(
+                               builder: (context) => OrderProgressScreen(),
+                             ));
+                           },
+                         )
+                       ],
+                      ),
+                    );
+                  }catch(e) {
+                    debugPrint(e);
+                  }
+
+                  //  TODO: 3. Navigate to Order Success Screen, once customer has confirmed his order.
                 },
               )
             ],
