@@ -2,6 +2,7 @@ import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/model/boba_customer.dart';
 import 'package:boba_me/ui/checkout_screen.dart';
 import 'package:boba_me/ui/product_add_screen.dart';
+import 'package:boba_me/ui/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,44 +89,7 @@ class _ProductScreenState extends State<ProductScreen> {
           );
         },
       ),
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              InkWell(
-                child: Image.asset("images/boba_profile_icon.png"),
-                onTap: () {
-                  print('profile clicked');
-                },
-              ),
-              InkWell(
-                child: Image.asset("images/boba_drink_icon.png"),
-                onTap: () {
-                  print('shop clicked');
-                },
-              ),
-              InkWell(
-                child: bobaCartModel.orderCount > 0
-                    ? ShoppingCartWithCount(count: bobaCartModel.orderCount)
-                    : Image.asset("images/shopping_cart_icon.png"),
-                onTap: () {
-                  if (bobaCartModel.orderCount > 0) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckoutScreen(),
-                        ));
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: BobaNavigationBar(bobaCartModel: bobaCartModel),
     );
   }
 
@@ -157,41 +121,6 @@ class _ProductScreenState extends State<ProductScreen> {
     super.dispose();
     _auth.signOut();
     print("user has signed-out");
-  }
-}
-
-class ShoppingCartWithCount extends StatelessWidget {
-  final int count;
-
-  const ShoppingCartWithCount({
-    Key key,
-    this.count,
-  }) : super(key: key);
-
-  refresh() {
-    setState() {}
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topRight,
-      children: <Widget>[
-        Image.asset("images/shopping_cart_icon.png"),
-        Container(
-          height: 21,
-          width: 21,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Colors.pinkAccent),
-          child: Text(
-            count.toString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        )
-      ],
-    );
   }
 }
 

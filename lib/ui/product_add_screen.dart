@@ -1,7 +1,6 @@
 import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/model/boba_order_model.dart';
 import 'package:boba_me/ui/checkout_screen.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

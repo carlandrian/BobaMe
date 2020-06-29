@@ -1,3 +1,4 @@
+import 'package:boba_me/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'custom_widgets/custom_widgets.dart';
@@ -45,6 +46,8 @@ class _SignupScreenState extends State<SignupScreen> {
               button2Text: "SIGNUP",
               button1Highlighted: false,
               button2Highlighted: true,
+              button1DestScreenWidget: LoginScreen(),
+              button2DestScreenWidget: null,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 44),

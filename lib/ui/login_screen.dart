@@ -1,5 +1,6 @@
 import 'package:boba_me/ui/product_screen.dart';
 import 'package:boba_me/ui/progress_screen.dart';
+import 'package:boba_me/ui/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
               button2Text: "SIGNUP",
               button1Highlighted: true,
               button2Highlighted: false,
+              button1DestScreenWidget: null,
+              button2DestScreenWidget: SignupScreen(),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 44),
