@@ -20,11 +20,19 @@ class BobaBannerImage extends StatelessWidget {
 }
 
 
-class LoginSignUpBanner extends StatelessWidget {
-  final bool loginHighlighted;
-  final bool signupHighlighted;
-  const LoginSignUpBanner({
-    Key key, this.loginHighlighted, this.signupHighlighted,
+class ButtonSwitchBanner extends StatelessWidget {
+  final String button1Text;
+  final String button2Text;
+  final bool button1Highlighted;
+  final bool button2Highlighted;
+
+
+  const ButtonSwitchBanner({
+    Key key,
+    @required this.button1Text,
+    @required this.button2Text,
+    this.button1Highlighted,
+    this.button2Highlighted,
   }) : super(key: key);
 
   @override
@@ -37,14 +45,14 @@ class LoginSignUpBanner extends StatelessWidget {
             children: <Widget>[
               InkWell(
                 child: Text(
-                  "LOGIN",
+                  button1Text,
                   style: TextStyle(
                     fontSize: 21,
-                    color: loginHighlighted ? Colors.white : Colors.white30,
+                    color: button1Highlighted ? Colors.white : Colors.white30,
                   ),
                 ),
                 onTap: () {
-                  print("Login tapped");
+//                  print("Login tapped");
                   Navigator.pushNamed(context, LoginScreen.id);
                 },
               ),
@@ -57,7 +65,7 @@ class LoginSignUpBanner extends StatelessWidget {
                     width: 130,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
-                      color: loginHighlighted ? Colors.pinkAccent : Colors.black,
+                      color: button1Highlighted ? Colors.pinkAccent : Colors.black,
                     ),
                   ),
                 ),
@@ -70,14 +78,13 @@ class LoginSignUpBanner extends StatelessWidget {
             children: <Widget>[
               InkWell(
                 child: Text(
-                  "SIGNUP",
+                  button2Text,
                   style: TextStyle(
                     fontSize: 21,
-                    color: signupHighlighted ? Colors.white : Colors.white30,
+                    color: button2Highlighted ? Colors.white : Colors.white30,
                   ),
                 ),
                 onTap: () {
-                  print("Sign Up tapped");
                   Navigator.pushNamed(context, SignupScreen.id);
                 },
               ),
@@ -88,7 +95,7 @@ class LoginSignUpBanner extends StatelessWidget {
                   width: 130,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: signupHighlighted ? Colors.pinkAccent : Colors.black,
+                    color: button2Highlighted ? Colors.pinkAccent : Colors.black,
                   ),
                 ),
               )

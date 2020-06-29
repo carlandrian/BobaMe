@@ -35,7 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: ListView(
           children: <Widget>[
             BobaBannerImage(),
-            LoginSignUpBanner(loginHighlighted: true, signupHighlighted: false,),
+            ButtonSwitchBanner(
+              button1Text: "LOGIN",
+              button2Text: "SIGNUP",
+              button1Highlighted: true,
+              button2Highlighted: false,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 44),
               child: Column(

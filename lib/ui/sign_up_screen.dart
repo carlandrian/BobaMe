@@ -40,7 +40,12 @@ class _SignupScreenState extends State<SignupScreen> {
           scrollDirection: Axis.vertical,
           children: <Widget>[
             BobaBannerImage(),
-            LoginSignUpBanner(signupHighlighted: true, loginHighlighted: false,),
+            ButtonSwitchBanner(
+              button1Text: "LOGIN",
+              button2Text: "SIGNUP",
+              button1Highlighted: false,
+              button2Highlighted: true,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 44),
               child: Column(
