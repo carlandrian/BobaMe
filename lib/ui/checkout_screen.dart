@@ -71,18 +71,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       _bobaOrdersMap.keys.elementAt(index)
                   ),
                 ),
-                // TODO: decide if to delete below commented out codes.
-                // add line widget
-//                  Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 15.0),
-//                    child: Container(
-//                      color: Colors.white12,
-//                      child: SizedBox(
-//                        height: 2,
-//                        width: MediaQuery.of(context).size.width,
-//                      ),
-//                    ),
-//                  )
               ],
             ),
           );

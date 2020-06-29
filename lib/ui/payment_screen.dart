@@ -217,11 +217,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 onPressed:
                 ()  {
-
-                  //  TODO: 1. Show an Alert Dialog to prompt customer to confirm his order.
                   orderInProgress = true;
                   try {
-                    //  TODO: 2. Implement Order save to Firestore, iterating to Customer's order/s.
                     showDialog(
                       barrierDismissible: false,
                       context: context,
@@ -257,8 +254,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   }catch(e) {
                     debugPrint(e);
                   }
-
-                  //  TODO: 3. Navigate to Order Success Screen, once customer has confirmed his order.
                 },
               )
             ],

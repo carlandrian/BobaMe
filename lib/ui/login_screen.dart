@@ -97,17 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       }
                     }catch(e) {
-//                      print("error is ${e}");
                       showDialog(
                          context: context,
                         barrierDismissible: false,
                         builder: (context) => ErrorAlertDialog(contentText: "Uh-oh! Login error. Are you a BobaMe user already?",),
                       );
                     }
-                    // TODO: Delete this setState()
-//                    setState(() {
-//                      print("password: ${passwordInputController.text}");
-//                    });
                   },
                   child: Text(
                     "SUBMIT",

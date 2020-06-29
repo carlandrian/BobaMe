@@ -22,8 +22,29 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              BobaBannerImage(),
-              Text("We are now processing your Boba. Thank you for ordering!"),
+              Text(
+                "We are now processing your Boba.",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              Text(
+                "Thank you for ordering!",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Image.asset("images/drink.png"),
+              SizedBox(
+                height: 80.0,
+              ),
               processOrderWidget(context, bobaCart),
             ],
           ),
@@ -42,14 +63,27 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
             {
               'customer_info_id': bobaCart.bobaCustomerInfo.uid,
               'boba_product_name': order.bobaProductName,
-              'milk_type_name': order.milkTypeName,
+              'milk_type': order.milkTypeName,
+              'sweetness_level': order.sweetnessLevelName,
+              'ice_level': order.iceLevelName,
+              'toppings': order.toppingsName,
               'order_count': order.orderCount,
+              'customer_name': bobaCart.bobaCustomerInfo.customerName,
+              'email': bobaCart.bobaCustomerInfo.email,
+              'deliver_to': bobaCart.bobaCustomerInfo.deliverTo,
+              'address_line_1': bobaCart.bobaCustomerInfo.addressLine1,
+              'address_line_2': bobaCart.bobaCustomerInfo.addressLine2,
+              'town_city': bobaCart.bobaCustomerInfo.townCity,
+              'province': bobaCart.bobaCustomerInfo.province,
+              'phone_number': bobaCart.bobaCustomerInfo.phoneNumber,
               'order_status': 'ORDER_REQUESTED',
+              // TODO: the above info might need added information during order saving.
             }
         );
       });
     }catch(e){
       print(e);
+
     }
 
     return RaisedButton(
