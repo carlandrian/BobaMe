@@ -125,18 +125,14 @@ class _ProductScreenState extends State<ProductScreen> {
 }
 
 Future<Widget> _getFirebaseImage(url) async {
-  Image m;
+  Image image;
   await FirebaseStorage.instance
       .ref()
       .child(url)
       .getDownloadURL()
-      .then((value) => {m = Image.network(value.toString())});
+      .then((value) => {image = Image.network(value.toString())});
 
-  return m;
-}
-
-Future<Widget> _getCustomerInfo(context, email) async {
-//  await FirebaseStorage.instance.ref()
+  return image;
 }
 
 Future<Widget> _getProducts(context, firebaseDocument) async {
