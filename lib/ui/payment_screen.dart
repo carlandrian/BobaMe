@@ -218,7 +218,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 onPressed:
                 ()  {
                   orderInProgress = true;
-                  try {
+//                  try {
                     showDialog(
                       barrierDismissible: false,
                       context: context,
@@ -251,9 +251,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                        ],
                       ),
                     );
-                  }catch(e) {
-                    debugPrint(e);
-                  }
+//                  }catch(e) {
+//                    debugPrint(e);
+//                  }
                 },
               )
             ],

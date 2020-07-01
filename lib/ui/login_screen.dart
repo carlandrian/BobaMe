@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     try {
                       final loginUser = await _auth.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text);
                       if(loginUser != null) {
-                        print("${loginUser.user.uid} is logged-in");
+//                        print("${loginUser.user.uid} is logged-in");
                         Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => ProductScreen(),
                         ));

@@ -111,6 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           'email' : newUser.user.email,
                           'first_name' : firstNameInputController.text,
                           'last_name' : lastNameInputController.text,
+                          'sign_up_date': DateTime.now().toUtc().toString(),
                         });
 
                         if(newCustomerInfo != null) {
