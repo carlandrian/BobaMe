@@ -49,7 +49,7 @@ class _ProductScreenState extends State<ProductScreen> {
         centerTitle: true,
         title: BobaBannerImage(),
       ),
-      body: StreamBuilder(
+      body: StreamBuilder<QuerySnapshot>(
         stream: bobaProductsDb,
         builder: (context, snapshots) {
           if (!snapshots.hasData) return CircularProgressIndicator();

@@ -68,6 +68,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               height: 10,
             ),
             Text(
+                (_bobaCustomer.deliverTo == null) ? "" :
               _bobaCustomer.deliverTo.toString(),
               style: TextStyle(
                 color: Colors.white30,
@@ -75,13 +76,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
            Text(
+             (_bobaCustomer.addressLine1 == null) ? "" :
               _bobaCustomer.addressLine1,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
             ),
-            (_bobaCustomer.addressLine2 != null && _bobaCustomer.addressLine2.isNotEmpty) ? Text(
+            (_bobaCustomer.addressLine2 != null && _bobaCustomer.addressLine2.isNotEmpty) ?  Text(
               _bobaCustomer.addressLine2,
               style: TextStyle(
                 color: Colors.white30,
@@ -89,15 +91,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ) : Container(),
             Text(
-              (_bobaCustomer.townCity != null && _bobaCustomer.province != null)
-                  ? _bobaCustomer.townCity + " " + _bobaCustomer.province : "",
+              (_bobaCustomer.townCity == null && _bobaCustomer.province == null)
+                  ? "" : _bobaCustomer.townCity + " " + _bobaCustomer.province,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,
               ),
             ),
             Text(
-              _bobaCustomer.phoneNumber != null ? _bobaCustomer.phoneNumber : "",
+              _bobaCustomer.phoneNumber == null ? "" : _bobaCustomer.phoneNumber,
               style: TextStyle(
                 color: Colors.white30,
                 fontSize: 15,

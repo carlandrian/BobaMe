@@ -1,8 +1,9 @@
-import 'package:boba_me/model/boba_product_model.dart';
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseAdapter {
-  Future<BobaProducts> getProducts() async {
+  var bobaProductsDb =
+  Firestore.instance.collection('BobaProducts').snapshots();
+  var customerInfoDb =
+  Firestore.instance.collection('CustomerInfo').snapshots();
 
-  }
 }

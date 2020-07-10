@@ -1,5 +1,6 @@
 import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/model/boba_order_model.dart';
+import 'package:boba_me/ui/orders_screen.dart';
 import 'package:boba_me/ui/product_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,10 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Image.asset("images/drink.png"),
+              SizedBox(
+                height: 30.0,
+              ),
               Text(
                 "We are now processing your Boba.",
                 style: TextStyle(
@@ -39,11 +44,7 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
                 ),
               ),
               SizedBox(
-                height: 30.0,
-              ),
-              Image.asset("images/drink.png"),
-              SizedBox(
-                height: 80.0,
+                height: 20.0,
               ),
               processOrderWidget(context, bobaCart),
             ],
@@ -87,19 +88,37 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
 
     }
 
-    return RaisedButton(
-      child: Text(
-          "Continue Shopping for Boba!",
-        style: TextStyle(
-          color: Colors.white,
+    return Column(
+      children: <Widget>[
+        RaisedButton(
+          child: Text(
+            "View your Orders!",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          onPressed: (){
+            bobaCart.clearOrders();
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => OrdersScreen(),
+            ));
+          },
         ),
-      ),
-      onPressed: (){
-        bobaCart.clearOrders();
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ProductScreen(),
-        ));
-      },
+        RaisedButton(
+          child: Text(
+              "Continue Shopping for Boba!",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          onPressed: (){
+            bobaCart.clearOrders();
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ProductScreen(),
+            ));
+          },
+        ),
+      ],
     );
   }
 }

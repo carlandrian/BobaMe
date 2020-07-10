@@ -12,6 +12,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
           ButtonSwitchBanner(
             button1Text: "PROFILE",
             button2Text: "ORDERS",
