@@ -77,8 +77,9 @@ class _OrderProgressScreenState extends State<OrderProgressScreen> {
               'town_city': bobaCart.bobaCustomerInfo.townCity,
               'province': bobaCart.bobaCustomerInfo.province,
               'phone_number': bobaCart.bobaCustomerInfo.phoneNumber,
-              'order_status': 'ORDER_REQUESTED',
+              'order_status': 'REQUESTED',
               'order_status_date': DateTime.now().toUtc().toString(),
+              'order_total': bobaCart.orderTotal,
               // TODO: the above info might need added information during order saving.
             }
         );

@@ -164,7 +164,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                   Text(
-                    "PHP ${_bobaCart.orderTotal}",
+                    "PHP ${double.parse(_bobaCart.orderTotal.toString()).toStringAsFixed(2)}",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

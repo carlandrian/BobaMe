@@ -193,10 +193,11 @@ class ErrorAlertDialog extends StatelessWidget {
 class BobaNavigationBar extends StatelessWidget {
   const BobaNavigationBar({
     Key key,
-    @required this.bobaCartModel,
+    @required this.bobaCartModel, this.activeScreen,
   }) : super(key: key);
 
   final BobaCartModel bobaCartModel;
+  final String activeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -211,17 +212,21 @@ class BobaNavigationBar extends StatelessWidget {
             InkWell(
               child: Image.asset("images/boba_profile_icon.png"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ProfileScreen(),
-                ));
+                if(activeScreen != "PROFILE_SCREEN") {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ));
+                }
               },
             ),
             InkWell(
               child: Image.asset("images/boba_drink_icon.png"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ProductScreen(),
-                ));
+                if(activeScreen != "PRODUCT_SCREEN") {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ProductScreen(),
+                  ));
+                }
               },
             ),
             InkWell(

@@ -89,7 +89,10 @@ class _ProductScreenState extends State<ProductScreen> {
           );
         },
       ),
-      bottomNavigationBar: BobaNavigationBar(bobaCartModel: bobaCartModel),
+      bottomNavigationBar: BobaNavigationBar(
+          bobaCartModel: bobaCartModel,
+        activeScreen: "PRODUCT_SCREEN",
+      ),
     );
   }
 

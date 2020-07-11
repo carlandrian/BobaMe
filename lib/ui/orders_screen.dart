@@ -2,7 +2,9 @@ import 'package:boba_me/model/boba_cart_model.dart';
 import 'package:boba_me/ui/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'custom_widgets/custom_widgets.dart';
@@ -18,7 +20,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   var bobaOrdersDb =
   Firestore.instance.collection('BobaOrders')
       .where("customer_info_id", isEqualTo: "i36YHr8WeqZW3llfqG7fsQ2NlS92")
-      .where("order_status", isEqualTo: "ORDER_REQUESTED")
+      .where("order_status", whereIn: ["REQUESTED", "PROCESSING", "DELIVERY"])
       .orderBy("order_status_date", descending: true).snapshots();
 
   @override
@@ -45,43 +47,43 @@ class _OrdersScreenState extends State<OrdersScreen> {
               letterSpacing: 2,
             ),
           ),
-            Flexible(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: bobaOrdersDb,
-                builder: (context, snapshots) {
-                  if (!snapshots.hasData) return CircularProgressIndicator();
+          Flexible(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: bobaOrdersDb,
+              builder: (context, snapshots) {
+                if (!snapshots.hasData) return CircularProgressIndicator();
 //                  debugPrint("snapshots.data.documents.length : ${snapshots.data.documents.length}");
-                  return ListView.builder(
-                    itemCount: snapshots.data.documents.length,
-                    itemBuilder: (context, int index) {
+                return ListView.builder(
+                  itemCount: snapshots.data.documents.length,
+                  itemBuilder: (context, int index) {
 //                      debugPrint("index $index");
-                      return Container(
-                        child: Column(
-                          children: <Widget>[
-                            FutureBuilder(
-                              future: getRequestedCustomerOrders(context, snapshots.data.documents[index]),
-                              builder: (context, snapshot) {
-                                if(snapshot.connectionState == ConnectionState.done) {
-                                  return Container(
-                                    child: snapshot.data,
-                                  );
-                                }
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          FutureBuilder(
+                            future: getRequestedCustomerOrders(context, snapshots.data.documents[index]),
+                            builder: (context, snapshot) {
+                              if(snapshot.connectionState == ConnectionState.done) {
+                                return Container(
+                                  child: snapshot.data,
+                                );
+                              }
 
-                                if(snapshot.connectionState == ConnectionState.waiting) {
-                                  return Container(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        )
-                      );
-                    }
-                  );
-                },
-              ),
+                              if(snapshot.connectionState == ConnectionState.waiting) {
+                                return Container(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    );
+                  }
+                );
+              },
             ),
+          ),
         ],
       ),
       bottomNavigationBar: BobaNavigationBar(
@@ -91,61 +93,86 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Future<Widget> getRequestedCustomerOrders(BuildContext context, DocumentSnapshot document) async {
-    return await Column(
+    Image productImage;
+    await FirebaseStorage.instance
+    .ref()
+    .child("${document['boba_product_name'].toString().toLowerCase()}.png")
+    .getDownloadURL()
+    .then((value) => {productImage = Image.network(value.toString())});
+
+    return Column(
       children: <Widget>[
+        CircleAvatar(
+          radius: 70.0,
+          backgroundImage: productImage.image,
+        ),
         Text(
-          "Boba: ${document['boba_product_name']}",
+          "${document['boba_product_name']} Boba",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 29.0,
+          ),
+        ),
+        Text(
+          "${document['milk_type']} | ${document['sweetness_level']} | ${document['ice_level']}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 17.0,
+          ),
+        ),
+        Text(
+          "Toppings: ${document['toppings'].toString().isEmpty ? "No toppings" : document['toppings']}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 17.0,
+          ),
+        ),
+        Text(
+          "QTY: ${document['order_count']}",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
+        SizedBox(
+          height: 30.0,
+        ),
         Text(
-          "Milk: ${document['milk_type']}",
+          "${DateFormat('MM/dd/yyyy').format(DateTime.parse(document['order_status_date']))}",
           style: TextStyle(
-            color: Colors.white,
+              color: Colors.white,
+              fontWeight: FontWeight.bold
           ),
         ),
         Text(
-          "Sweetnes: ${document['sweetness_level']}",
+          "Order: ${document['order_status']}",
           style: TextStyle(
             color: Colors.white,
-          ),
-        ),
-        Text(
-          "Ice: ${document['ice_level']}",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          "Toppings: ${document['toppings']}",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          "Order Status: ${document['order_status']}",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        Text(
-          "Order Date: ${document['order_status_date']}",
-          style: TextStyle(
-            color: Colors.white,
+            fontWeight: FontWeight.bold
           ),
         ),
         Text(
           "Deliver to: ${document['deliver_to']}",
           style: TextStyle(
             color: Colors.white,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        Text(
+          "Order Total: Php ${double.parse(document['order_total'].toString()).toStringAsFixed(2)}",
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold
           ),
         ),
 
-        SizedBox(
-          width: 250,
-          child: Divider(
-            color: Colors.white30,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: SizedBox(
+            width: 250,
+            child: Divider(
+              color: Colors.white54,
+            ),
           ),
         ),
       ],

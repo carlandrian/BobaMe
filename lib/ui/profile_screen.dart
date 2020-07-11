@@ -1,11 +1,15 @@
 import 'package:boba_me/model/boba_cart_model.dart';
+import 'package:boba_me/ui/login_screen.dart';
 import 'package:boba_me/ui/orders_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'custom_widgets/custom_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     BobaCartModel bobaCartModel = Provider.of<BobaCartModel>(context);
@@ -112,8 +116,10 @@ class ProfileScreen extends StatelessWidget {
                             alignment: Alignment.center,
                             child: InkWell(
                               onTap: () {
-                                // TODO: Implement LOGOUT
-                                debugPrint("user trying to logout");
+                                _auth.signOut();
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ));
                               },
                               child: Text(
                                 "LOGOUT",
@@ -160,6 +166,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BobaNavigationBar(
         bobaCartModel: bobaCartModel,
+        activeScreen: "PROFILE_SCREEN",
       ),
     );
   }
